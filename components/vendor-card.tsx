@@ -6,7 +6,7 @@ import { Vendor } from '@/lib/supabase';
 import { isOpen } from '@/lib/utils';
 
 interface VendorCardProps {
-  vendor: Vendor;
+  vendor: any;
   avgRating: number;
 }
 
