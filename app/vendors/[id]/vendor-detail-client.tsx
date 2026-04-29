@@ -161,7 +161,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
             {Object.keys(groupedMenu).length === 0 ? (
               <p className="text-white/40 italic">No menu items available.</p>
             ) : (
-              Object.entries(groupedMenu).map(([category, items]: [string, any[]]) => (
+              Object.entries(groupedMenu).map(([category, items]) => (
                 <div 
                   key={category} 
                   ref={(el) => { categoryRefs.current[category] = el; }}
@@ -169,7 +169,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
                 >
                   <h3 className="text-xl font-medium mb-4 text-white/90">{category}</h3>
                   <div className="space-y-4 mb-10">
-                    {items.map(item => (
+                    {(items as any[]).map(item => (
                       <div key={item.id} className={`flex justify-between items-center p-4 rounded-xl border transition-all group ${
                         budget && item.price > budget ? 'opacity-30' : 'bg-white/[0.03] border-white/[0.08] hover:bg-neutral-900'
                       }`}>
