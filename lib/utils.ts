@@ -15,3 +15,10 @@ export const isOpen = (vendorName: string) => {
 
   return hour >= 11 && hour <= 23;
 };
+
+export const isVeg = (value: any): boolean => {
+  if (value === null || value === undefined) return true; // Default to veg
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') return value.toLowerCase() === 'true';
+  return !!value;
+};

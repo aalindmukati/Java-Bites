@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ReviewForm } from './review-form';
 import { BackgroundPaths } from '@/components/ui/background-paths';
+import { VegIndicator } from '@/components/ui/veg-indicator';
 
 export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   const [budget, setBudget] = useState<number | null>(null);
@@ -125,8 +126,11 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
                 <h3 className="text-xl text-white mb-4">{category}</h3>
 
                 {items.map(item => (
-                  <div key={item.id} className="flex justify-between p-3 border-b border-white/10">
-                    <span className="text-white">{item.name}</span>
+                  <div key={item.id} className="flex justify-between items-center p-3 border-b border-white/10">
+                    <div className="flex items-center gap-3">
+                      <VegIndicator value={item.is_veg} />
+                      <span className="text-white">{item.name}</span>
+                    </div>
                     <span className="text-white">₹{item.price}</span>
                   </div>
                 ))}

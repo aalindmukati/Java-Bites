@@ -13,6 +13,7 @@ interface MenuItem {
   name: string;
   price: number;
   category: string;
+  is_veg?: any;
 }
 
 interface Vendor {
