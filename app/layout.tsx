@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/favicon.ico",
+    icon: "2026-05-15_22-30-31.png",
   },
 };
 
