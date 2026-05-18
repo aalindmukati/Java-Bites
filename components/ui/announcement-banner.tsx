@@ -37,7 +37,7 @@ export function AnnouncementBanner() {
             <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-[#09090b]/80 backdrop-blur-xl border border-white/[0.05] shadow-2xl">
               
               {/* Content Section */}
-              <div className="flex-1 min-w-0 pr-8 md:pr-0">
+              <div className="flex-1 min-w-0 pr-10 sm:pr-12">
                 <div className="flex items-center gap-2 mb-1.5">
                   <div className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -51,22 +51,10 @@ export function AnnouncementBanner() {
                   </h3>
                 </div>
                 
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-2xl">
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-3xl">
                   We’re continuously improving menus, vendor data, timings, and overall experience. 
                   If you spot incorrect prices, missing items, bugs, or have feature suggestions, please let us know.
                 </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 w-full md:w-auto shrink-0 pt-2 md:pt-0 border-t border-white/5 md:border-t-0">
-                <a 
-                  href="mailto:feedback@javabites.app?subject=Java Bites Feedback"
-                  className="relative group/btn w-full md:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-zinc-900 bg-zinc-100 rounded-full transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <span className="relative z-10">Report Feedback</span>
-                  {/* Subtle Glow */}
-                  <div className="absolute inset-0 rounded-full bg-white/20 blur-md opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                </a>
               </div>
 
               {/* Dismiss Button */}
