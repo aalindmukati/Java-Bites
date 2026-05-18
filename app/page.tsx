@@ -2,6 +2,7 @@ import { getVendors } from '@/lib/data';
 import { HeroGeometric } from '@/components/ui/shape-landing-hero';
 import { VendorsList } from '@/components/vendors-list';
 import { supabase } from '@/lib/supabase';
+import { AnnouncementBanner } from '@/components/ui/announcement-banner';
 
 export default async function Home() {
   const vendors = await getVendors();
@@ -37,6 +38,8 @@ export default async function Home() {
         title1="SRMIST's Food Court"
         title2="Discover Every Bite"
       />
+
+      <AnnouncementBanner />
 
       {/* Vendor Section */}
       <VendorsList vendors={vendorsWithRatings} uniqueCuisines={uniqueCuisines} />
