@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Star, MapPin, ArrowLeft } from 'lucide-react';
+import { Star, MapPin, ArrowLeft, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ReviewForm } from './review-form';
@@ -90,12 +90,21 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
         {/* Vendor Info */}
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-white">{vendor.name}</h1>
-          <div className="flex gap-4 text-white/60 mt-2">
+          <div className="flex flex-wrap gap-4 text-white/60 mt-2 items-center">
             <span className="flex items-center"><MapPin className="w-4 h-4 mr-1" />{vendor.location_in_court}</span>
             <span className="flex items-center text-yellow-400">
               <Star className="w-4 h-4 mr-1 fill-current" />
               {avgRating > 0 ? avgRating.toFixed(1) : "No reviews"}
             </span>
+            {vendor.phone_number && (
+              <a 
+                href={`tel:${vendor.phone_number}`}
+                className="flex items-center hover:text-white transition-colors"
+              >
+                <Phone className="w-4 h-4 mr-1" />
+                {vendor.phone_number}
+              </a>
+            )}
           </div>
         </div>
 

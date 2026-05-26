@@ -3,7 +3,7 @@ import { supabase } from './supabase'
 export async function getVendors() {
   const { data, error } = await supabase
     .from('vendors')
-    .select('id, name, description, cuisine_type, location_in_court, is_open, image_url, menu_items(id, name, price, category, is_veg)')
+    .select('id, name, description, cuisine_type, location_in_court, is_open, image_url, phone_number, menu_items(id, name, price, category, is_veg)')
 
   if (error) {
     console.error('Error fetching vendors:', error)
@@ -16,7 +16,7 @@ export async function getVendors() {
 export async function getVendorById(id: string) {
   const { data, error } = await supabase
     .from('vendors')
-    .select('id, name, description, cuisine_type, location_in_court, is_open, image_url')
+    .select('id, name, description, cuisine_type, location_in_court, is_open, image_url, phone_number')
     .eq('id', id)
     .single()
 
