@@ -34,7 +34,7 @@ export function AnnouncementBanner() {
           <div className="relative group rounded-2xl p-[1px] bg-gradient-to-b from-white/10 to-transparent hover:from-white/20 transition-colors duration-500 overflow-hidden">
             
             {/* Glassmorphism Container */}
-            <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-[#09090b]/80 backdrop-blur-xl border border-white/[0.05] shadow-2xl">
+            <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-card/80 backdrop-blur-xl border border-border shadow-2xl">
               
               {/* Content Section */}
               <div className="flex-1 min-w-0 pr-10 sm:pr-12">
@@ -46,12 +46,12 @@ export function AnnouncementBanner() {
                   <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/20">
                     Beta
                   </span>
-                  <h3 className="text-sm sm:text-base font-medium text-zinc-100 flex items-center gap-1.5 truncate">
+                  <h3 className="text-sm sm:text-base font-medium text-foreground flex items-center gap-1.5 truncate">
                     <span>🚧</span> Java Bites is actively evolving
                   </h3>
                 </div>
                 
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-3xl">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-3xl">
                   We’re continuously improving menus, vendor data, timings, and overall experience. 
                   If you spot incorrect prices, missing items, bugs, or have feature suggestions, please let us know.
                 </p>
@@ -60,7 +60,7 @@ export function AnnouncementBanner() {
               {/* Dismiss Button */}
               <button
                 onClick={handleDismiss}
-                className="absolute top-4 right-4 md:top-1/2 md:-translate-y-1/2 md:right-5 p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-white/5 rounded-full transition-colors"
+                className="absolute top-4 right-4 md:top-1/2 md:-translate-y-1/2 md:right-5 p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors"
                 aria-label="Dismiss announcement"
               >
                 <X className="w-4 h-4" />

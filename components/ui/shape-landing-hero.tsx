@@ -73,7 +73,7 @@ function HeroGeometric({
   };
 
   return (
-    <div className="relative h-[60vh] w-full flex items-center justify-center overflow-hidden bg-[#030303]">
+    <div className="relative h-[60vh] w-full flex items-center justify-center overflow-hidden bg-background">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
 
       <div className="absolute inset-0 overflow-hidden">
@@ -96,7 +96,7 @@ function HeroGeometric({
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8"
           >
             <Circle className="h-2 w-2 fill-rose-500/80" />
-            <span className="text-sm text-white/60">{badge}</span>
+            <span className="text-sm text-foreground/60">{badge}</span>
           </motion.div>
 
           {/* Title */}
@@ -107,11 +107,11 @@ function HeroGeometric({
             transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
           >
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/80">
                 {title1}
               </span>
               <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-foreground/90 to-accent">
                 {title2}
               </span>
             </h1>
@@ -124,7 +124,7 @@ function HeroGeometric({
             animate="visible"
             transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
           >
-            <p className="text-base sm:text-lg text-white/40 max-w-xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
               Browse vendor menus, check what's open, and find your next favourite meal at SRMIST.
             </p>
           </motion.div>
@@ -132,7 +132,7 @@ function HeroGeometric({
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80 pointer-events-none" />
     </div>
   );
 }

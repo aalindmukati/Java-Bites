@@ -109,7 +109,7 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="h-64 rounded-2xl bg-white/[0.02] animate-pulse border border-white/[0.05]"
+            className="h-64 rounded-2xl bg-muted animate-pulse border border-border"
           />
         ))}
       </div>
@@ -119,7 +119,7 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
   const trendingVendors = vendors.slice(0, 5);
 
   return (
-    <div className="relative overflow-hidden bg-black">
+    <div className="relative overflow-hidden bg-background text-foreground transition-colors duration-300">
       {/* Feature 2: Disable heavy animations on mobile */}
       {!isMobile && <BackgroundPaths />}
 
@@ -130,7 +130,7 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
       <div className="relative z-10">
         
         {/* Search + Filter */}
-        <section className="px-6 pt-12 pb-6 border-b border-white/[0.08]">
+        <section className="px-6 pt-12 pb-6 border-b border-border">
           <div className="max-w-6xl mx-auto space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="relative max-w-2xl flex-1 flex items-center">
@@ -214,7 +214,7 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
         {!searchQuery && !cuisineFilter && !budget && (
           <section className="px-6 pt-12 pb-6">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-foreground mb-8 flex items-center gap-2">
                 🔥 Popular Now
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -231,19 +231,19 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-between items-end mb-8">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">
+                <h2 className="text-2xl font-bold text-foreground mb-2">
                   {searchQuery || cuisineFilter || budget ? 'Search Results' : 'All Vendors'}
                 </h2>
                 {budget && (
-                  <p className="text-sm text-white/60">
+                  <p className="text-sm text-muted-foreground">
                     Showing vendors with items under ₹{budget}
                   </p>
                 )}
               </div>
             </div>
             {visibleVendors.length === 0 ? (
-              <div className="text-center py-20 rounded-2xl border border-white/[0.08] bg-white/[0.02]">
-                <p className="text-xl text-white/40">No vendors found matching your criteria.</p>
+              <div className="text-center py-20 rounded-2xl border border-border bg-card">
+                <p className="text-xl text-muted-foreground">No vendors found matching your criteria.</p>
               </div>
             ) : (
               <>

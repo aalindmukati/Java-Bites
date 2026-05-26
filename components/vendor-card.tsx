@@ -23,7 +23,7 @@ export const VendorCard = memo(function VendorCard({ vendor, avgRating }: Vendor
 
   return (
     <Link href={`/vendors/${vendor.id}`}>
-      <div className="group overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] hover:border-white/[0.2] transition-all duration-300 cursor-pointer h-full">
+      <div className="group overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition-all duration-300 cursor-pointer h-full">
 
         {/* Image */}
         <div className="relative h-48 w-full overflow-hidden">
@@ -61,24 +61,24 @@ export const VendorCard = memo(function VendorCard({ vendor, avgRating }: Vendor
         {/* Content */}
         <div className="p-5 space-y-3">
           <div className="flex justify-between items-start">
-            <h3 className="text-lg font-semibold text-white">{vendor.name}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{vendor.name}</h3>
 
             <div className="flex items-center gap-1 text-sm text-yellow-400">
               <Star className="w-4 h-4 fill-current" />
               <span>{(avgRating || 0).toFixed(1)}</span>
-              <span className="text-white/40 text-xs">
+              <span className="text-muted-foreground text-xs">
                 ({vendor.reviewCount || 0})
               </span>
             </div>
           </div>
 
           <div>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/[0.05] text-white/60 border border-white/[0.08]">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground border border-border">
               {vendor.cuisine_type || 'Food'}
             </span>
           </div>
 
-          <div className="space-y-1.5 text-sm text-white/40">
+          <div className="space-y-1.5 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <MapPin className="w-3.5 h-3.5 shrink-0" />
               <span>{vendor.location_in_court || 'Food Court'}</span>

@@ -50,6 +50,30 @@
 
 @layer base {
   :root {
+    /* Warm light mode food colors */
+    --background: #fff8f0;
+    --foreground: #2a1700;
+    --card: #ffffff;
+    --card-foreground: #2a1700;
+    --popover: #ffffff;
+    --popover-foreground: #2a1700;
+    --primary: #f59e0b;
+    --primary-foreground: #2a1700;
+    --secondary: #ffecd6;
+    --secondary-foreground: #2a1700;
+    --muted: #ffecd6;
+    --muted-foreground: #7d6b59;
+    --accent: #ffb95f;
+    --accent-foreground: #2a1700;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --border: #e6d5c3;
+    --input: #e6d5c3;
+    --ring: #f59e0b;
+    --radius: 0.75rem;
+  }
+  
+  .dark {
     /* Base Colors from Stitch Inspiration */
     --background: #19120a;
     --foreground: #f0e0d1;
@@ -70,7 +94,6 @@
     --border: #534434;
     --input: #3c3329;
     --ring: #f59e0b;
-    --radius: 0.75rem;
   }
 }
 
