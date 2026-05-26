@@ -66,8 +66,12 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
 
+  verification: {
+    google: "Bzt6fPEFDoV75rsXu-JNJ",
+  },
+
   icons: {
-    icon: "2026-05-15_22-30-31.png",
+    icon: "/2026-05-15_22-30-31.png",
   },
 };
 
