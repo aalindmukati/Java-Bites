@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ReviewForm } from './review-form';
 import { BackgroundPaths } from '@/components/ui/background-paths';
 import { VegIndicator } from '@/components/ui/veg-indicator';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   const [budget, setBudget] = useState<number | null>(null);
@@ -21,13 +22,17 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
   // Group menu items by category
   const groupedMenu = useMemo(() => {
-    const grouped = menuItems.reduce((acc: Record<string, any[]>, item: any) => {
+    const filteredItems = budget 
+      ? menuItems.filter((item: any) => item.price <= budget)
+      : menuItems;
+
+    const grouped = filteredItems.reduce((acc: Record<string, any[]>, item: any) => {
       if (!acc[item.category]) acc[item.category] = [];
       acc[item.category].push(item);
       return acc;
     }, {});
     return grouped;
-  }, [menuItems]);
+  }, [menuItems, budget]);
 
   const categories = Object.keys(groupedMenu);
 
@@ -66,15 +71,15 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   };
 
   return (
-    <main className="min-h-screen pb-20 bg-black relative overflow-hidden">
+    <main className="min-h-screen pb-20 bg-background text-foreground relative overflow-hidden transition-colors duration-300">
       <BackgroundPaths />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-neutral-900 to-black opacity-70 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background opacity-80 pointer-events-none" />
 
       {/* Header */}
       <div className="relative h-64 md:h-80 w-full z-0">
         <img src={vendor.image_url} alt={vendor.name} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
 
         <div className="absolute top-6 left-6">
           <Link href="/vendors">
@@ -89,8 +94,8 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
         {/* Vendor Info */}
         <div className="mb-10">
-          <h1 className="text-4xl font-bold text-white">{vendor.name}</h1>
-          <div className="flex flex-wrap gap-4 text-white/60 mt-2 items-center">
+          <h1 className="text-4xl font-bold text-foreground">{vendor.name}</h1>
+          <div className="flex flex-wrap gap-4 text-muted-foreground mt-2 items-center">
             <span className="flex items-center"><MapPin className="w-4 h-4 mr-1" />{vendor.location_in_court}</span>
             <span className="flex items-center text-yellow-400">
               <Star className="w-4 h-4 mr-1 fill-current" />
@@ -99,7 +104,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
             {vendor.phone_number && (
               <a 
                 href={`tel:${vendor.phone_number}`}
-                className="flex items-center hover:text-white transition-colors"
+                className="flex items-center hover:text-foreground transition-colors"
               >
                 <Phone className="w-4 h-4 mr-1" />
                 {vendor.phone_number}
@@ -108,15 +113,39 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
           </div>
         </div>
 
+        {/* Budget Filter */}
+        <div className="flex gap-2 mt-8 mb-4 overflow-x-auto pb-2">
+          {["All", "Under ₹100", "Under ₹150"].map((label, i) => {
+            const value = i === 1 ? 100 : i === 2 ? 150 : null;
+            const isActive = budget === value;
+
+            return (
+              <button
+                key={label}
+                onClick={() => setBudget(value)}
+                className={`px-4 py-1.5 rounded-full border text-sm transition-all shrink-0 ${
+                  isActive
+                    ? 'bg-green-500/20 border-green-500/50 text-green-500 dark:text-green-400'
+                    : 'bg-secondary text-secondary-foreground border-border hover:border-primary/50'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
         {/* Category Tabs */}
         {categories.length > 0 && (
-          <div className="sticky top-0 bg-black/80 backdrop-blur px-4 py-3 flex gap-2 overflow-x-auto">
+          <div className="sticky top-0 bg-background/80 backdrop-blur px-4 py-3 flex gap-2 overflow-x-auto z-20 border-b border-border">
             {categories.map(category => (
               <button
                 key={category}
                 onClick={() => scrollToCategory(category)}
-                className={`px-4 py-2 rounded-full ${
-                  activeCategory === category ? 'bg-white text-black' : 'text-white/60'
+                className={`px-4 py-2 rounded-full border ${
+                  activeCategory === category 
+                    ? 'bg-foreground text-background border-foreground' 
+                    : 'bg-secondary/50 text-muted-foreground border-border'
                 }`}
               >
                 {category}
@@ -126,37 +155,57 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
         )}
 
         {/* Menu */}
-        <div className="space-y-10 mt-6">
+        <div className="space-y-10 mt-6 relative z-10">
           {Object.keys(groupedMenu).length === 0 ? (
-            <p className="text-white/40">No menu items available.</p>
+            <p className="text-muted-foreground">No menu items available for this filter.</p>
           ) : (
-            (Object.entries(groupedMenu) as [string, any[]][]).map(([category, items]) => (
-              <div key={category} ref={(el) => { categoryRefs.current[category] = el; }}>
-                <h3 className="text-xl text-white mb-4">{category}</h3>
+            <AnimatePresence mode="popLayout">
+              {(Object.entries(groupedMenu) as [string, any[]][]).map(([category, items]) => (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  key={category} 
+                  ref={(el) => { categoryRefs.current[category] = el; }}
+                >
+                  <h3 className="text-xl text-foreground mb-4">{category}</h3>
 
-                {items.map(item => (
-                  <div key={item.id} className="flex justify-between items-center p-3 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                      <VegIndicator value={item.is_veg} />
-                      <span className="text-white">{item.name}</span>
-                    </div>
-                    <span className="text-white">₹{item.price}</span>
-                  </div>
-                ))}
-              </div>
-            ))
+                  <AnimatePresence mode="popLayout">
+                    {items.map(item => (
+                      <motion.div 
+                        layout
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        key={item.id} 
+                        className="flex justify-between items-center p-3 border-b border-border overflow-hidden"
+                      >
+                        <div className="flex items-center gap-3">
+                          <VegIndicator value={item.is_veg} />
+                          <span className="text-foreground">{item.name}</span>
+                        </div>
+                        <span className="text-foreground font-medium">₹{item.price}</span>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           )}
         </div>
 
         {/* Reviews */}
-        <div className="mt-12">
-          <h2 className="text-xl text-white mb-4">Reviews</h2>
+        <div className="mt-12 relative z-10">
+          <h2 className="text-xl text-foreground mb-4">Reviews</h2>
           <ReviewForm vendorId={vendor.id} />
 
           {reviews.map((r: any) => (
-            <div key={r.id} className="mt-4 p-4 bg-white/5 rounded">
-              <p className="text-white">{r.reviewer_name}</p>
-              <p className="text-white/50">{r.review_text}</p>
+            <div key={r.id} className="mt-4 p-4 bg-secondary border border-border rounded-xl">
+              <p className="text-foreground font-medium">{r.reviewer_name}</p>
+              <p className="text-muted-foreground text-sm mt-1">{r.review_text}</p>
             </div>
           ))}
         </div>
