@@ -5,15 +5,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const isOpen = (vendorName: string) => {
-  const now = new Date();
-  const hour = now.getHours();
+export const getOpenStatus = (date: Date = new Date()): boolean => {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    hour12: false
+  });
+  const hour = parseInt(formatter.format(date), 10);
+  return hour >= 9 && hour < 23;
+};
 
-  if (vendorName === "S.R Chat Corner") {
-    return hour >= 16 && hour <= 23; // custom timing
-  }
-
-  return hour >= 11 && hour <= 23;
+export const isOpen = (vendorName?: string): boolean => {
+  return getOpenStatus();
 };
 
 export const isVeg = (value: any): boolean => {

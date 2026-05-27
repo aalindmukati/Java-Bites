@@ -19,7 +19,11 @@ interface VendorCardProps {
 }
 
 export const VendorCard = memo(function VendorCard({ vendor, avgRating }: VendorCardProps) {
-  const isCurrentlyOpen = isOpen(vendor.name);
+  const [isCurrentlyOpen, setIsCurrentlyOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsCurrentlyOpen(isOpen(vendor.name));
+  }, [vendor.name]);
 
   return (
     <Link href={`/vendors/${vendor.id}`}>
