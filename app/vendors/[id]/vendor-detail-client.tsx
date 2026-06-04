@@ -10,11 +10,18 @@ import { ReviewForm } from './review-form';
 import { BackgroundPaths } from '@/components/ui/background-paths';
 import { VegIndicator } from '@/components/ui/veg-indicator';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   const [budget, setBudget] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("");
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const fallbackImage = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop';
+  const [imgSrc, setImgSrc] = useState(vendor.image_url || fallbackImage);
+
+  useEffect(() => {
+    setImgSrc(vendor.image_url || fallbackImage);
+  }, [vendor.image_url]);
 
   const avgRating = reviews.length > 0 
     ? reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length
@@ -78,7 +85,17 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
       {/* Header */}
       <div className="relative h-64 md:h-80 w-full z-0">
-        <img src={vendor.image_url} alt={vendor.name} className="w-full h-full object-cover" />
+        <Image 
+          src={imgSrc} 
+          alt={vendor.name} 
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover" 
+          onError={() => {
+            setImgSrc(fallbackImage);
+          }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
 
         <div className="absolute top-6 left-6">

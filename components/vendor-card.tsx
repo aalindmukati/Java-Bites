@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Star, MapPin, Clock } from 'lucide-react';
 import { isOpen } from '@/lib/utils';
 
@@ -20,10 +21,16 @@ interface VendorCardProps {
 
 export const VendorCard = memo(function VendorCard({ vendor, avgRating }: VendorCardProps) {
   const [isCurrentlyOpen, setIsCurrentlyOpen] = React.useState(false);
+  const fallbackImage = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop';
+  const [imgSrc, setImgSrc] = React.useState(vendor.image_url || fallbackImage);
 
   React.useEffect(() => {
     setIsCurrentlyOpen(isOpen(vendor.name));
   }, [vendor.name]);
+
+  React.useEffect(() => {
+    setImgSrc(vendor.image_url || fallbackImage);
+  }, [vendor.image_url]);
 
   return (
     <Link href={`/vendors/${vendor.id}`}>
@@ -31,18 +38,16 @@ export const VendorCard = memo(function VendorCard({ vendor, avgRating }: Vendor
 
         {/* Image */}
         <div className="relative h-48 w-full overflow-hidden">
-          <img
-            src={
-              vendor.image_url ||
-              'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop'
-            }
+          <Image
+            src={imgSrc}
             alt={vendor.name}
-            loading="lazy"
-            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 rounded-xl"
-            onError={(e) => {
-              e.currentTarget.src =
-                'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop';
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl"
+            onError={() => {
+              setImgSrc(fallbackImage);
             }}
+            loading="lazy"
           />
 
           {/* Gradient */}

@@ -7,6 +7,7 @@ import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
 import { Star, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default async function Home() {
   const vendors = await getVendors();
@@ -59,10 +60,13 @@ export default async function Home() {
             <SpotlightCard key={vendor.id} className="h-full">
               <Link href={`/vendors/${vendor.id}`} className="block h-full p-5 cursor-pointer">
                 <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-4 relative">
-                  <img 
-                    src={vendor.image_url} 
+                  <Image 
+                    src={vendor.image_url || 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop'} 
                     alt={vendor.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-3 text-white">
