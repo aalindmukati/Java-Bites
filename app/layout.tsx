@@ -10,6 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://java-bites.vercel.app"),
+  applicationName: "Java Bites",
 
   title: {
     default: "Java Bites",
@@ -68,10 +69,6 @@ export const metadata: Metadata = {
 
   verification: {
     google: "Bzt6fPEFDoV75rsXu-JNJk8RVfOIw_tf9RFH1DuKLBM",
-  },
-
-  icons: {
-    icon: "/2026-05-15_22-30-31.png",
   },
 };
 
