@@ -21,7 +21,7 @@ interface VendorCardProps {
 
 export const VendorCard = memo(function VendorCard({ vendor, avgRating }: VendorCardProps) {
   const [isCurrentlyOpen, setIsCurrentlyOpen] = React.useState(false);
-  const fallbackImage = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop';
+  const fallbackImage = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop';
   const [imgSrc, setImgSrc] = React.useState(vendor.image_url || fallbackImage);
 
   React.useEffect(() => {

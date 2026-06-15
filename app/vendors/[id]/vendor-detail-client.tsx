@@ -16,12 +16,21 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   const [budget, setBudget] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("");
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const fallbackImage = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop';
+  const fallbackImage = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop';
   const [imgSrc, setImgSrc] = useState(vendor.image_url || fallbackImage);
 
   useEffect(() => {
     setImgSrc(vendor.image_url || fallbackImage);
   }, [vendor.image_url]);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const avgRating = reviews.length > 0 
     ? reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length
@@ -79,7 +88,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
   return (
     <main className="min-h-screen pb-20 bg-background text-foreground relative overflow-hidden transition-colors duration-300">
-      <BackgroundPaths />
+      {!isMobile && <BackgroundPaths />}
 
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background opacity-80 pointer-events-none" />
 

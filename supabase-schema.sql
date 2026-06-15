@@ -41,9 +41,9 @@ DELETE FROM vendors;
 
 -- Insert Vendors
 INSERT INTO vendors (id, name, description, cuisine_type, location_in_court, is_open, image_url) VALUES 
-('11111111-1111-1111-1111-111111111111', 'The Spice Route', 'Authentic North and South Indian curries, biryanis, and thalis.', 'Indian', 'Stall A1', true, 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=2936&auto=format&fit=crop'),
-('22222222-2222-2222-2222-222222222222', 'Wok This Way', 'Quick, hot, and spicy Chinese noodles and stir-fries.', 'Chinese', 'Stall B2', true, 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=2940&auto=format&fit=crop'),
-('33333333-3333-3333-3333-333333333333', 'Cafe Java', 'Premium coffee, sandwiches, and freshly baked pastries.', 'Cafe', 'Stall C3', false, 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop');
+('11111111-1111-1111-1111-111111111111', 'The Spice Route', 'Authentic North and South Indian curries, biryanis, and thalis.', 'Indian', 'Stall A1', true, 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=1000&auto=format&fit=crop'),
+('22222222-2222-2222-2222-222222222222', 'Wok This Way', 'Quick, hot, and spicy Chinese noodles and stir-fries.', 'Chinese', 'Stall B2', true, 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=1000&auto=format&fit=crop'),
+('33333333-3333-3333-3333-333333333333', 'Cafe Java', 'Premium coffee, sandwiches, and freshly baked pastries.', 'Cafe', 'Stall C3', false, 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop');
 
 -- Insert Menu Items for 'The Spice Route'
 INSERT INTO menu_items (vendor_id, name, price, category, is_veg) VALUES 
