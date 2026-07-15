@@ -33,7 +33,9 @@ export default async function Home() {
   );
 
   const uniqueCuisines = Array.from(new Set(vendors.map(v => v.cuisine_type))) as string[];
-  const featuredVendors = vendorsWithRatings.slice(0, 3);
+  const featuredVendors = [...vendorsWithRatings]
+    .sort((a, b) => b.avgRating - a.avgRating || b.reviewCount - a.reviewCount)
+    .slice(0, 3);
 
   return (
     <main className="min-h-screen pb-20 bg-background transition-colors duration-300">

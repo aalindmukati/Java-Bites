@@ -8,6 +8,7 @@ import { Badge } from './ui/badge';
 import { BackgroundPaths } from './ui/background-paths';
 import Loader from './ui/loader';
 import { Button } from './ui/button';
+import { isVeg, isOpen } from '@/lib/utils';
 
 interface MenuItem {
   name: string;
@@ -38,7 +39,9 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [cuisineFilter, setCuisineFilter] = useState("");
-  const [budget, setBudget] = useState<number | null>(null);
+  const [budgetFilter, setBudgetFilter] = useState<string>("all");
+  const [vegFilter, setVegFilter] = useState<string>("all");
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [sortByRating, setSortByRating] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(10);
@@ -83,12 +86,32 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
       );
 
       const cuisineMatch = cuisineFilter ? vendor.cuisine_type === cuisineFilter : true;
-      const budgetMatch = !budget || vendor.menu_items?.some(item => item.price <= budget);
+
+      // Budget filter logic
+      const budgetMatch = (() => {
+        if (budgetFilter === "all") return true;
+        if (budgetFilter === "under50") return vendor.menu_items?.some(item => item.price <= 50);
+        if (budgetFilter === "under100") return vendor.menu_items?.some(item => item.price <= 100);
+        if (budgetFilter === "under150") return vendor.menu_items?.some(item => item.price <= 150);
+        if (budgetFilter === "above150") return vendor.menu_items?.some(item => item.price > 150);
+        return true;
+      })();
+
+      // Veg/Non-Veg filter logic
+      const vegMatch = (() => {
+        if (vegFilter === "all") return true;
+        if (vegFilter === "veg") return vendor.menu_items?.some(item => isVeg(item.is_veg));
+        if (vegFilter === "nonveg") return vendor.menu_items?.some(item => !isVeg(item.is_veg));
+        return true;
+      })();
+
+      // Open Now filter logic
+      const openMatch = !openFilter || isOpen(vendor.name, vendor.is_open);
 
       // Return vendors where name matches OR at least one menu item/category matches
       const searchMatch = !lower || nameMatch || itemMatch;
 
-      return searchMatch && cuisineMatch && budgetMatch;
+      return searchMatch && cuisineMatch && budgetMatch && vegMatch && openMatch;
     });
 
     if (sortByRating) {
@@ -96,7 +119,7 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
     }
 
     return result;
-  }, [vendors, debouncedQuery, cuisineFilter, budget, sortByRating]);
+  }, [vendors, debouncedQuery, cuisineFilter, budgetFilter, vegFilter, openFilter, sortByRating]);
 
   // Performance: Slice for lazy loading
   const visibleVendors = useMemo(() => {
@@ -182,36 +205,89 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                     {c}
                   </Badge>
                 ))}
-              </div>
+              </div>              <div className="h-6 w-px bg-white/10 hidden md:block" />
 
-              <div className="h-6 w-px bg-white/10 hidden md:block" />
+              <div className="flex flex-wrap items-center gap-6">
+                {/* Budget Filter */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Budget</span>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { label: "All", value: "all" },
+                      { label: "Under ₹50", value: "under50" },
+                      { label: "Under ₹100", value: "under100" },
+                      { label: "Under ₹150", value: "under150" },
+                      { label: "Above ₹150", value: "above150" }
+                    ].map((item) => {
+                      const isActive = budgetFilter === item.value;
+                      return (
+                        <button
+                          key={item.value}
+                          onClick={() => setBudgetFilter(item.value)}
+                          className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all ${
+                            isActive
+                              ? 'bg-green-500/20 border-green-500/50 text-green-400'
+                              : 'bg-white/[0.03] border-white/[0.08] text-white/60 hover:bg-white/[0.08]'
+                          }`}
+                        >
+                          {item.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-              <div className="flex gap-2">
-                {["All", "Under ₹100", "Under ₹150"].map((label, i) => {
-                  const value = i === 1 ? 100 : i === 2 ? 150 : null;
-                  const isActive = budget === value;
+                {/* Diet Filter */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Diet</span>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { label: "All", value: "all" },
+                      { label: "Veg", value: "veg" },
+                      { label: "Non-Veg", value: "nonveg" }
+                    ].map((item) => {
+                      const isActive = vegFilter === item.value;
+                      return (
+                        <button
+                          key={item.value}
+                          onClick={() => setVegFilter(item.value)}
+                          className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all ${
+                            isActive
+                              ? 'bg-amber-500/20 border-amber-500/50 text-amber-400'
+                              : 'bg-white/[0.03] border-white/[0.08] text-white/60 hover:bg-white/[0.08]'
+                          }`}
+                        >
+                          {item.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                  return (
+                {/* Open Now Filter */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Status</span>
+                  <div>
                     <button
-                      key={label}
-                      onClick={() => setBudget(value)}
-                      className={`px-4 py-1.5 rounded-full border text-sm transition-all ${
-                        isActive
-                          ? 'bg-green-500/20 border-green-500/50 text-green-400'
+                      onClick={() => setOpenFilter(!openFilter)}
+                      className={`px-4 py-1.5 rounded-full border text-xs font-medium transition-all flex items-center gap-1.5 ${
+                        openFilter
+                          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'
                           : 'bg-white/[0.03] border-white/[0.08] text-white/60 hover:bg-white/[0.08]'
                       }`}
                     >
-                      {label}
+                      <span className={`w-2 h-2 rounded-full ${openFilter ? 'bg-emerald-400 animate-pulse' : 'bg-white/40'}`} />
+                      Open Now
                     </button>
-                  );
-                })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Trending Section */}
-        {!searchQuery && !cuisineFilter && !budget && (
+        {!searchQuery && !cuisineFilter && budgetFilter === "all" && vegFilter === "all" && !openFilter && (
           <section className="px-6 pt-12 pb-6">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-2xl font-bold text-foreground mb-8 flex items-center gap-2">
@@ -232,11 +308,16 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
             <div className="flex justify-between items-end mb-8">
               <div>
                 <h2 className="text-2xl font-bold text-foreground mb-2">
-                  {searchQuery || cuisineFilter || budget ? 'Search Results' : 'All Vendors'}
+                  {searchQuery || cuisineFilter || budgetFilter !== "all" || vegFilter !== "all" || openFilter ? 'Search Results' : 'All Vendors'}
                 </h2>
-                {budget && (
+                {budgetFilter !== "all" && (
                   <p className="text-sm text-muted-foreground">
-                    Showing vendors with items under ₹{budget}
+                    Showing vendors with items {
+                      budgetFilter === "under50" ? "under ₹50" :
+                      budgetFilter === "under100" ? "under ₹100" :
+                      budgetFilter === "under150" ? "under ₹150" :
+                      "above ₹150"
+                    }
                   </p>
                 )}
               </div>

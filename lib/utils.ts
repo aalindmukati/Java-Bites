@@ -15,7 +15,8 @@ export const getOpenStatus = (date: Date = new Date()): boolean => {
   return hour >= 9 && hour < 23;
 };
 
-export const isOpen = (vendorName?: string): boolean => {
+export const isOpen = (vendorName?: string, databaseIsOpen?: boolean): boolean => {
+  if (databaseIsOpen === false) return false;
   return getOpenStatus();
 };
 

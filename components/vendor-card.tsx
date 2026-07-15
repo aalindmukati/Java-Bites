@@ -12,6 +12,7 @@ interface Vendor {
   location_in_court?: string;
   avgRating?: number;
   reviewCount?: number;
+  is_open?: boolean;
 }
 
 interface VendorCardProps {
@@ -25,8 +26,8 @@ export const VendorCard = memo(function VendorCard({ vendor, avgRating }: Vendor
   const [imgSrc, setImgSrc] = React.useState(vendor.image_url || fallbackImage);
 
   React.useEffect(() => {
-    setIsCurrentlyOpen(isOpen(vendor.name));
-  }, [vendor.name]);
+    setIsCurrentlyOpen(isOpen(vendor.name, vendor.is_open));
+  }, [vendor.name, vendor.is_open]);
 
   React.useEffect(() => {
     setImgSrc(vendor.image_url || fallbackImage);

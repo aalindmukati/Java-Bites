@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Star, MapPin, ArrowLeft, Phone } from 'lucide-react';
+import { Star, MapPin, ArrowLeft, Phone, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ReviewForm } from './review-form';
@@ -11,11 +11,14 @@ import { BackgroundPaths } from '@/components/ui/background-paths';
 import { VegIndicator } from '@/components/ui/veg-indicator';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { isVeg } from '@/lib/utils';
 
 export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
-  const [budget, setBudget] = useState<number | null>(null);
+  const [budgetFilter, setBudgetFilter] = useState<string>("all");
+  const [dietFilter, setDietFilter] = useState<string>("all");
   const [activeCategory, setActiveCategory] = useState<string>("");
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const fallbackImage = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop';
   const [imgSrc, setImgSrc] = useState(vendor.image_url || fallbackImage);
 
@@ -38,9 +41,22 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
   // Group menu items by category
   const groupedMenu = useMemo(() => {
-    const filteredItems = budget 
-      ? menuItems.filter((item: any) => item.price <= budget)
-      : menuItems;
+    let filteredItems = menuItems;
+    if (budgetFilter === "under50") {
+      filteredItems = filteredItems.filter((item: any) => item.price <= 50);
+    } else if (budgetFilter === "under100") {
+      filteredItems = filteredItems.filter((item: any) => item.price <= 100);
+    } else if (budgetFilter === "under150") {
+      filteredItems = filteredItems.filter((item: any) => item.price <= 150);
+    } else if (budgetFilter === "above150") {
+      filteredItems = filteredItems.filter((item: any) => item.price > 150);
+    }
+
+    if (dietFilter === "veg") {
+      filteredItems = filteredItems.filter((item: any) => isVeg(item.is_veg));
+    } else if (dietFilter === "nonveg") {
+      filteredItems = filteredItems.filter((item: any) => !isVeg(item.is_veg));
+    }
 
     const grouped = filteredItems.reduce((acc: Record<string, any[]>, item: any) => {
       if (!acc[item.category]) acc[item.category] = [];
@@ -48,7 +64,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
       return acc;
     }, {});
     return grouped;
-  }, [menuItems, budget]);
+  }, [menuItems, budgetFilter, dietFilter]);
 
   const categories = Object.keys(groupedMenu);
 
@@ -78,6 +94,20 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [categories]);
+
+  // Tab auto-scroll
+  useEffect(() => {
+    if (activeCategory) {
+      const activeTabElement = tabRefs.current[activeCategory];
+      if (activeTabElement) {
+        activeTabElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }
+  }, [activeCategory]);
 
   const scrollToCategory = (category: string) => {
     const element = categoryRefs.current[category];
@@ -121,11 +151,15 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
         {/* Vendor Info */}
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-foreground">{vendor.name}</h1>
-          <div className="flex flex-wrap gap-4 text-muted-foreground mt-2 items-center">
+          <div className="flex flex-wrap gap-4 text-muted-foreground mt-2 items-center text-sm">
             <span className="flex items-center"><MapPin className="w-4 h-4 mr-1" />{vendor.location_in_court}</span>
             <span className="flex items-center text-yellow-400">
               <Star className="w-4 h-4 mr-1 fill-current" />
               {avgRating > 0 ? avgRating.toFixed(1) : "No reviews"}
+            </span>
+            <span className="flex items-center text-foreground">
+              <Clock className="w-4 h-4 mr-1" />
+              9:00 AM – 11:00 PM
             </span>
             {vendor.phone_number && (
               <a 
@@ -139,39 +173,77 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
           </div>
         </div>
 
-        {/* Budget Filter */}
-        <div className="flex gap-2 mt-8 mb-4 overflow-x-auto pb-2">
-          {["All", "Under ₹100", "Under ₹150"].map((label, i) => {
-            const value = i === 1 ? 100 : i === 2 ? 150 : null;
-            const isActive = budget === value;
+        {/* Filters */}
+        <div className="flex flex-wrap gap-6 mt-8 mb-6 items-center border-t border-b border-border py-4">
+          {/* Budget Filter */}
+          <div className="flex flex-col gap-2">
+            <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Budget</span>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "All", value: "all" },
+                { label: "Under ₹50", value: "under50" },
+                { label: "Under ₹100", value: "under100" },
+                { label: "Under ₹150", value: "under150" },
+                { label: "Above ₹150", value: "above150" }
+              ].map((item) => {
+                const isActive = budgetFilter === item.value;
+                return (
+                  <button
+                    key={item.value}
+                    onClick={() => setBudgetFilter(item.value)}
+                    className={`px-3 py-1.5 rounded-full border text-xs transition-all shrink-0 ${
+                      isActive
+                        ? 'bg-green-500/20 border-green-500/50 text-green-500 dark:text-green-400 font-medium'
+                        : 'bg-secondary text-secondary-foreground border-border hover:border-primary/50'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-            return (
-              <button
-                key={label}
-                onClick={() => setBudget(value)}
-                className={`px-4 py-1.5 rounded-full border text-sm transition-all shrink-0 ${
-                  isActive
-                    ? 'bg-green-500/20 border-green-500/50 text-green-500 dark:text-green-400'
-                    : 'bg-secondary text-secondary-foreground border-border hover:border-primary/50'
-                }`}
-              >
-                {label}
-              </button>
-            );
-          })}
+          {/* Diet Filter */}
+          <div className="flex flex-col gap-2">
+            <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Diet</span>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "All", value: "all" },
+                { label: "Veg", value: "veg" },
+                { label: "Non-Veg", value: "nonveg" }
+              ].map((item) => {
+                const isActive = dietFilter === item.value;
+                return (
+                  <button
+                    key={item.value}
+                    onClick={() => setDietFilter(item.value)}
+                    className={`px-3 py-1.5 rounded-full border text-xs transition-all shrink-0 ${
+                      isActive
+                        ? 'bg-amber-500/20 border-amber-500/50 text-amber-500 dark:text-amber-400 font-medium'
+                        : 'bg-secondary text-secondary-foreground border-border hover:border-primary/50'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Category Tabs */}
         {categories.length > 0 && (
-          <div className="sticky top-0 bg-background/80 backdrop-blur px-4 py-3 flex gap-2 overflow-x-auto z-20 border-b border-border">
+          <div className="sticky top-0 bg-background/80 backdrop-blur px-4 py-3 flex gap-2 overflow-x-auto z-20 border-b border-border scrollbar-none">
             {categories.map(category => (
               <button
                 key={category}
+                ref={el => { tabRefs.current[category] = el; }}
                 onClick={() => scrollToCategory(category)}
-                className={`px-4 py-2 rounded-full border ${
+                className={`px-4 py-2 rounded-full border text-sm transition-all shrink-0 ${
                   activeCategory === category 
-                    ? 'bg-foreground text-background border-foreground' 
-                    : 'bg-secondary/50 text-muted-foreground border-border'
+                    ? 'bg-foreground text-background border-foreground font-medium' 
+                    : 'bg-secondary/50 text-muted-foreground border-border hover:text-foreground'
                 }`}
               >
                 {category}
