@@ -2,6 +2,8 @@ import { getVendorById, getMenuItems, getReviews } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import { VendorDetailClient } from './vendor-detail-client';
 
+export const dynamic = 'force-dynamic';
+
 export default async function VendorDetail({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const [vendor, menuItems, reviews] = await Promise.all([
