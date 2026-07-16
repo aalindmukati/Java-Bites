@@ -100,11 +100,19 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
     if (activeCategory) {
       const activeTabElement = tabRefs.current[activeCategory];
       if (activeTabElement) {
-        activeTabElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center'
-        });
+        const container = activeTabElement.parentElement;
+        if (container) {
+          const containerWidth = container.clientWidth;
+          const tabWidth = activeTabElement.clientWidth;
+          const containerRect = container.getBoundingClientRect();
+          const tabRect = activeTabElement.getBoundingClientRect();
+          const scrollLeftOffset = tabRect.left - containerRect.left + container.scrollLeft;
+
+          container.scrollTo({
+            left: scrollLeftOffset - (containerWidth / 2) + (tabWidth / 2),
+            behavior: 'smooth'
+          });
+        }
       }
     }
   }, [activeCategory]);
