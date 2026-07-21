@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { VendorCard } from './vendor-card';
 import { Input } from './ui/input';
 import { Search, ChevronDown } from 'lucide-react';
@@ -279,6 +280,19 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                       <span className={`w-2 h-2 rounded-full ${openFilter ? 'bg-emerald-400 animate-pulse' : 'bg-white/40'}`} />
                       Open Now
                     </button>
+                  </div>
+                </div>
+
+                {/* Today's Mess Action */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Dining</span>
+                  <div>
+                    <Link
+                      href="/mess"
+                      className="px-4 py-1.5 rounded-full border text-xs font-medium transition-all flex items-center gap-1.5 bg-amber-500/20 border-amber-500/50 text-amber-500 hover:bg-amber-500/30 dark:bg-amber-500/25 dark:border-amber-500/40 dark:text-amber-400 cursor-pointer"
+                    >
+                      🍽 Today's Mess
+                    </Link>
                   </div>
                 </div>
               </div>
