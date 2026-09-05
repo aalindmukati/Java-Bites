@@ -59,8 +59,8 @@ function ElegantShape({
 
 function HeroGeometric({
   badge = "Java Bites",
-  title1 = "SRMIST's Food Court",
-  title2 = "Every stall. Every menu. No guessing.",
+  title1 = "SRMs's Food Court",
+  title2 = "Every stall Every menu No Hassle.",
 }: {
   badge?: string;
   title1?: string;
