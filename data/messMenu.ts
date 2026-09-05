@@ -20,10 +20,11 @@ export const messMenu: MessMenuData = {
       "Sambar",
       "Spl Chutney",
       "Poori",
-      "Alco Dal Masala",
+      "Aloo Masala",
       "Tea / Coffee / Milk",
       "Boiled Egg",
-      "Banana"
+      "Banana",
+      "Wow u found an easter egg yay"
     ],
     lunch: [
       "Chappathi",
@@ -320,6 +321,7 @@ export const messMenu: MessMenuData = {
     ],
     dinner: [
       "Variety Stuffing Paratha",
+      "Wait people actually eat ts lol ",
       "Curd",
       "Steamed Rice",
       "Hara Moong Dal Tadka",

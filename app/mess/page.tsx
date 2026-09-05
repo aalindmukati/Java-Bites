@@ -3,7 +3,7 @@ import { MessDashboard } from "./mess-dashboard";
 
 export const metadata: Metadata = {
   title: "Today's Mess | Java Bites",
-  description: "View today's SRMIST hostel mess dining menu dynamically.",
+  description: "You dont like this food anyway",
 };
 
 export default function MessPage() {
