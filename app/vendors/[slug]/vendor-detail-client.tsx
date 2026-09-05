@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { Star, MapPin, Phone, Clock, Search } from 'lucide-react';
+import Link from 'next/link';
+import { Star, MapPin, Phone, Clock, Search, ArrowLeft } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ReviewForm } from './review-form';
 import { BackgroundPaths } from '@/components/ui/background-paths';
@@ -154,6 +155,14 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 -mt-20 relative z-10">
+        {/* Minimal Back Arrow */}
+        <Link 
+          href="/vendors"
+          aria-label="Go back to vendors"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-background/80 hover:bg-background border border-border/80 text-foreground/80 hover:text-foreground backdrop-blur-md shadow-md transition-all duration-200 mb-4 hover:scale-105"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Vendor Info */}
         <div className="mb-10">

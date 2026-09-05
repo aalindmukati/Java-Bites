@@ -34,7 +34,7 @@ export default async function VendorsPage() {
     <main className="min-h-screen pb-20 bg-black relative">
       <div className="max-w-6xl mx-auto px-6 pt-12">
         <h1 className="text-4xl font-bold text-white mb-2">Our Vendors</h1>
-        <p className="text-white/40 mb-12">Discover the best food SRMIST has to offer.</p>
+        <p className="text-white/40 mb-12">The SRM food court — finally in one place.</p>
       </div>
 
       <Suspense fallback={null}>

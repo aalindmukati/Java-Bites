@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ui/theme-toggle';
 
@@ -13,8 +14,16 @@ export function Navbar() {
         {/* Left: Logo / Wordmark */}
         <Link 
           href="/" 
-          className="flex items-center gap-2 font-bold text-lg tracking-tight text-foreground hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2.5 font-bold text-lg tracking-tight text-foreground hover:opacity-90 transition-opacity"
         >
+          <Image
+            src="/logo.png"
+            alt="Java Bites Logo"
+            width={28}
+            height={28}
+            className="rounded-lg object-contain shrink-0"
+            priority
+          />
           <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
             Java Bites
           </span>

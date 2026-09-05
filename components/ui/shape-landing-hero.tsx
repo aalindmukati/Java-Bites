@@ -60,7 +60,7 @@ function ElegantShape({
 function HeroGeometric({
   badge = "Java Bites",
   title1 = "SRMIST's Food Court",
-  title2 = "Discover Every Bite",
+  title2 = "Every stall. Every menu. No guessing.",
 }: {
   badge?: string;
   title1?: string;
@@ -125,7 +125,7 @@ function HeroGeometric({
             transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
           >
             <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
-              Browse vendor menus, check what's open, and find your next favourite meal at SRMIST.
+              The SRM food court — finally in one place.
             </p>
           </motion.div>
 
