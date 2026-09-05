@@ -62,7 +62,7 @@ export default async function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {featuredVendors.map(vendor => (
             <SpotlightCard key={vendor.id} className="h-full">
-              <Link href={`/vendors/${vendor.id}`} className="block h-full p-5 cursor-pointer">
+              <Link href={`/vendors/${vendor.slug || vendor.id}`} className="block h-full p-5 cursor-pointer">
                 <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-4 relative">
                   <Image 
                     src={vendor.image_url || 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop'} 

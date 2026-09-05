@@ -7,7 +7,6 @@ import { Input } from './ui/input';
 import { Search, ChevronDown } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { BackgroundPaths } from './ui/background-paths';
-import Loader from './ui/loader';
 import { Button } from './ui/button';
 import { isVeg, isOpen } from '@/lib/utils';
 
@@ -20,6 +19,7 @@ interface MenuItem {
 
 interface Vendor {
   id: string;
+  slug?: string;
   name: string;
   description: string;
   cuisine_type: string;
@@ -44,20 +44,16 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
   const [vegFilter, setVegFilter] = useState<string>("all");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [sortByRating, setSortByRating] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(10);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Initial load
-    const timer = setTimeout(() => setLoading(false), 500);
     setIsMobile(window.innerWidth < 768);
     
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
@@ -127,18 +123,6 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
     return filteredVendors.slice(0, visibleCount);
   }, [filteredVendors, visibleCount]);
 
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-6 py-20">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="h-64 rounded-2xl bg-muted animate-pulse border border-border"
-          />
-        ))}
-      </div>
-    );
-  }
 
   const trendingVendors = vendors.slice(0, 5);
 

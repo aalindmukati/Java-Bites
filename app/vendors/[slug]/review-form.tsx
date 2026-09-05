@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 
-export function ReviewForm({ vendorId }: { vendorId: string }) {
+export function ReviewForm({ vendorId, vendorSlug }: { vendorId: string; vendorSlug?: string }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +59,7 @@ export function ReviewForm({ vendorId }: { vendorId: string }) {
       className="space-y-4"
     >
       <input type="hidden" name="vendor_id" value={vendorId} />
+      <input type="hidden" name="vendor_slug" value={vendorSlug || ''} />
       
       {error && (
         <div className="p-3 text-sm bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg">

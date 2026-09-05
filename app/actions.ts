@@ -2,9 +2,11 @@
 
 import { supabase } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
+import { slugify } from '@/lib/utils';
 
 export async function submitReview(formData: FormData) {
   const vendor_id = formData.get('vendor_id') as string;
+  const vendor_slug = formData.get('vendor_slug') as string;
   const reviewer_name = (formData.get('reviewer_name') as string || '').trim();
   const rating = parseInt(formData.get('rating') as string, 10);
   const review_text = (formData.get('review_text') as string || '').trim().slice(0, 200);
@@ -26,13 +28,19 @@ export async function submitReview(formData: FormData) {
     throw new Error('Failed to submit review. Please try again later.');
   }
 
+  if (vendor_slug) {
+    revalidatePath(`/vendors/${vendor_slug}`);
+  }
   revalidatePath(`/vendors/${vendor_id}`);
 }
 
 
 export async function addVendor(formData: FormData) {
+  const name = formData.get('name') as string;
+  const slug = name ? slugify(name) : undefined;
   await supabase.from('vendors').insert({
-    name: formData.get('name'),
+    name,
+    slug,
     description: formData.get('description'),
     cuisine_type: formData.get('cuisine_type'),
     location_in_court: formData.get('location_in_court'),
@@ -41,6 +49,7 @@ export async function addVendor(formData: FormData) {
   })
 
   revalidatePath('/')
+  revalidatePath('/vendors')
 }
 
 export async function addMenuItem(formData: FormData) {

@@ -306,7 +306,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
         {/* Reviews */}
         <div className="mt-12 relative z-10">
           <h2 className="text-xl text-foreground mb-4">Reviews</h2>
-          <ReviewForm vendorId={vendor.id} />
+          <ReviewForm vendorId={vendor.id} vendorSlug={vendor.slug} />
 
           {reviews.map((r: any) => (
             <div key={r.id} className="mt-4 p-4 bg-secondary border border-border rounded-xl">

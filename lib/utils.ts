@@ -26,3 +26,16 @@ export const isVeg = (value: any): boolean => {
   if (typeof value === 'string') return value.toLowerCase() === 'true';
   return !!value;
 };
+
+export const isUuid = (str: string): boolean => {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+};
+
+export const slugify = (text: string): string => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+};

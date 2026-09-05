@@ -6,6 +6,7 @@ import { isOpen } from '@/lib/utils';
 
 interface Vendor {
   id: string;
+  slug?: string;
   name: string;
   image_url?: string;
   cuisine_type?: string;
@@ -34,7 +35,7 @@ export const VendorCard = memo(function VendorCard({ vendor, avgRating }: Vendor
   }, [vendor.image_url]);
 
   return (
-    <Link href={`/vendors/${vendor.id}`}>
+    <Link href={`/vendors/${vendor.slug || vendor.id}`}>
       <div className="group overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition-all duration-300 cursor-pointer h-full">
 
         {/* Image */}

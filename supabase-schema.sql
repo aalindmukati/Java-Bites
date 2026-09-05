@@ -4,6 +4,7 @@
 CREATE TABLE IF NOT EXISTS vendors (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
+    slug TEXT UNIQUE,
     description TEXT,
     cuisine_type TEXT,
     location_in_court TEXT,
