@@ -1,11 +1,8 @@
 'use client';
 
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Star, MapPin, ArrowLeft, Phone, Clock } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Star, MapPin, Phone, Clock, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { ReviewForm } from './review-form';
 import { BackgroundPaths } from '@/components/ui/background-paths';
 import { VegIndicator } from '@/components/ui/veg-indicator';
@@ -16,6 +13,7 @@ import { isVeg } from '@/lib/utils';
 export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   const [budgetFilter, setBudgetFilter] = useState<string>("all");
   const [dietFilter, setDietFilter] = useState<string>("all");
+  const [menuSearchQuery, setMenuSearchQuery] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<string>("");
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -39,9 +37,18 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
     ? reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length
     : 0;
 
-  // Group menu items by category
+  // Group menu items by category and apply filters + client-side menu search
   const groupedMenu = useMemo(() => {
     let filteredItems = menuItems;
+
+    // Menu search filter
+    if (menuSearchQuery.trim()) {
+      const q = menuSearchQuery.toLowerCase().trim();
+      filteredItems = filteredItems.filter((item: any) =>
+        item.name.toLowerCase().includes(q)
+      );
+    }
+
     if (budgetFilter === "under50") {
       filteredItems = filteredItems.filter((item: any) => item.price <= 50);
     } else if (budgetFilter === "under100") {
@@ -64,12 +71,12 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
       return acc;
     }, {});
     return grouped;
-  }, [menuItems, budgetFilter, dietFilter]);
+  }, [menuItems, budgetFilter, dietFilter, menuSearchQuery]);
 
   const categories = Object.keys(groupedMenu);
 
   useEffect(() => {
-    if (categories.length > 0 && !activeCategory) {
+    if (categories.length > 0 && (!activeCategory || !categories.includes(activeCategory))) {
       setActiveCategory(categories[0]);
     }
   }, [categories, activeCategory]);
@@ -130,7 +137,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background opacity-80 pointer-events-none" />
 
-      {/* Header */}
+      {/* Header Image */}
       <div className="relative h-64 md:h-80 w-full z-0">
         <Image 
           src={imgSrc} 
@@ -144,14 +151,6 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
-
-        <div className="absolute top-6 left-6">
-          <Link href="/vendors">
-            <Button variant="secondary" size="icon" className="rounded-full bg-background/50 backdrop-blur-md">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-          </Link>
-        </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-6 -mt-20 relative z-10">
@@ -181,11 +180,30 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
           </div>
         </div>
 
+        {/* Menu Search Input */}
+        <div className="relative mb-6">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            value={menuSearchQuery}
+            onChange={(e) => setMenuSearchQuery(e.target.value)}
+            placeholder="Search menu..."
+            className="pl-11 pr-12 h-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground rounded-xl"
+          />
+          {menuSearchQuery && (
+            <button
+              onClick={() => setMenuSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
         {/* Filters */}
-        <div className="flex flex-wrap gap-6 mt-8 mb-6 items-center border-t border-b border-border py-4">
+        <div className="flex flex-wrap gap-6 mb-6 items-center border-t border-b border-border py-4">
           {/* Budget Filter */}
           <div className="flex flex-col gap-2">
-            <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Budget</span>
+            <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Budget</span>
             <div className="flex flex-wrap gap-2">
               {[
                 { label: "All", value: "all" },
@@ -214,7 +232,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
           {/* Diet Filter */}
           <div className="flex flex-col gap-2">
-            <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Diet</span>
+            <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Diet</span>
             <div className="flex flex-wrap gap-2">
               {[
                 { label: "All", value: "all" },
@@ -242,7 +260,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
         {/* Category Tabs */}
         {categories.length > 0 && (
-          <div className="sticky top-0 bg-background/80 backdrop-blur px-4 py-3 flex gap-2 overflow-x-auto z-20 border-b border-border scrollbar-none">
+          <div className="sticky top-16 bg-background/80 backdrop-blur px-4 py-3 flex gap-2 overflow-x-auto z-20 border-b border-border scrollbar-none">
             {categories.map(category => (
               <button
                 key={category}
@@ -263,7 +281,13 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
         {/* Menu */}
         <div className="space-y-10 mt-6 relative z-10">
           {Object.keys(groupedMenu).length === 0 ? (
-            <p className="text-muted-foreground">No menu items available for this filter.</p>
+            <div className="text-center py-12 px-4 rounded-xl border border-border bg-card/30">
+              <p className="text-muted-foreground">
+                {menuSearchQuery.trim()
+                  ? `No menu items found for "${menuSearchQuery}".`
+                  : 'No menu items available for this filter.'}
+              </p>
+            </div>
           ) : (
             <AnimatePresence mode="popLayout">
               {(Object.entries(groupedMenu) as [string, any[]][]).map(([category, items]) => (

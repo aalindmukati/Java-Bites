@@ -15,8 +15,12 @@ export async function submitReview(formData: FormData) {
     throw new Error('Invalid input data');
   }
 
-  if (reviewer_name.length === 0 || review_text.length === 0) {
-    throw new Error('Reviewer name and text cannot be empty');
+  if (reviewer_name.length === 0) {
+    throw new Error('Reviewer name cannot be empty');
+  }
+
+  if (review_text.length < 20 || review_text.length > 200) {
+    throw new Error('Review must be between 20 and 200 characters.');
   }
 
   const { error } = await supabase

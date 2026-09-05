@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { VendorCard } from './vendor-card';
 import { Input } from './ui/input';
@@ -37,8 +38,10 @@ interface VendorsListProps {
 }
 
 export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams?.get('search') || "";
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [debouncedQuery, setDebouncedQuery] = useState(initialSearch);
   const [cuisineFilter, setCuisineFilter] = useState("");
   const [budgetFilter, setBudgetFilter] = useState<string>("all");
   const [vegFilter, setVegFilter] = useState<string>("all");

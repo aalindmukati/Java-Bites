@@ -1,11 +1,11 @@
 import { getVendors } from '@/lib/data';
 import { HeroGeometric } from '@/components/ui/shape-landing-hero';
-import { VendorsList } from '@/components/vendors-list';
+import { GlobalSearch } from '@/components/global-search';
 import { supabase } from '@/lib/supabase';
 import { AnnouncementBanner } from '@/components/ui/announcement-banner';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
-import { Star, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Star, MapPin, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -34,19 +34,13 @@ export default async function Home() {
     })
   );
 
-  const uniqueCuisines = Array.from(new Set(vendors.map(v => v.cuisine_type))) as string[];
   const featuredVendors = [...vendorsWithRatings]
     .sort((a, b) => b.avgRating - a.avgRating || b.reviewCount - a.reviewCount)
     .slice(0, 3);
 
   return (
-    <main className="min-h-screen pb-20 bg-background transition-colors duration-300">
+    <main className="min-h-screen pb-24 bg-background transition-colors duration-300">
       
-      {/* Theme Toggle */}
-      <div className="absolute top-6 right-6 z-50">
-        <ThemeToggle />
-      </div>
-
       {/* Animated Hero */}
       <HeroGeometric
         badge="Java Bites"
@@ -54,11 +48,38 @@ export default async function Home() {
         title2="Discover Every Bite"
       />
 
-      <AnnouncementBanner />
+      {/* Global Search & Primary CTA */}
+      <div className="max-w-4xl mx-auto px-6 -mt-8 relative z-30 space-y-6">
+        <GlobalSearch vendors={vendors} />
+
+        <div className="flex justify-center">
+          <Link href="/vendors">
+            <Button 
+              size="lg" 
+              className="rounded-full px-8 py-6 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 transition-all flex items-center gap-2"
+            >
+              Browse All Vendors <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-12">
+        <AnnouncementBanner />
+      </div>
 
       {/* Featured Vendors */}
       <section className="max-w-5xl mx-auto px-6 mt-12 mb-8">
-        <h2 className="text-2xl font-bold mb-6 text-foreground">Featured Vendors</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-foreground">Featured Vendors</h2>
+          <Link 
+            href="/vendors" 
+            className="text-sm font-medium text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+          >
+            View all <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {featuredVendors.map(vendor => (
             <SpotlightCard key={vendor.id} className="h-full">
@@ -91,9 +112,6 @@ export default async function Home() {
           ))}
         </div>
       </section>
-
-      {/* Vendor Section */}
-      <VendorsList vendors={vendorsWithRatings} uniqueCuisines={uniqueCuisines} />
 
     </main>
   );
