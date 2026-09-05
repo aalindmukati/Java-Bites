@@ -154,7 +154,7 @@ function HeroGeometric({
         <FloatingEmoji
           emoji="🍟"
           className="left-[6%] sm:left-[10%] bottom-[8%]"
-          sizeClassName="text-5xl sm:text-6xl md:text-7xl"
+          sizeClassName="text-6xl sm:text-7xl md:text-8xl"
           opacityClassName="opacity-25"
           delay={0.8}
           duration={9}
