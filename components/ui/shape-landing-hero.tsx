@@ -66,7 +66,7 @@ function HeroGeometric({
   title1?: string;
   title2?: string;
 }) {
-  // ✅ FIXED: no function variants
+  
   const fadeUpVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 },

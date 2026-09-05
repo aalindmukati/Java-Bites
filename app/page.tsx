@@ -44,8 +44,8 @@ export default async function Home() {
       {/* Animated Hero */}
       <HeroGeometric
         badge="Java Bites"
-        title1="SRMIST's Food Court"
-        title2="Every stall. Every menu. No guessing."
+        title1="SRMs's Food Court"
+        title2="Every stall Every menu No Hassle."
       />
 
       {/* Global Search & Primary CTA */}
