@@ -1,57 +1,57 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function ElegantShape({
-  className,
-  delay = 0,
-  width = 400,
-  height = 100,
-  rotate = 0,
-  gradient = "from-white/[0.08]",
-}: {
-  className?: string;
+interface FloatingEmojiProps {
+  emoji: string;
+  className: string;
+  sizeClassName?: string;
+  opacityClassName?: string;
   delay?: number;
-  width?: number;
-  height?: number;
-  rotate?: number;
-  gradient?: string;
-}) {
+  duration?: number;
+  floatY?: number;
+  rotateDeg?: number;
+}
+
+function FloatingEmoji({
+  emoji,
+  className,
+  sizeClassName = "text-6xl md:text-8xl",
+  opacityClassName = "opacity-25",
+  delay = 0,
+  duration = 8,
+  floatY = 14,
+  rotateDeg = 6,
+}: FloatingEmojiProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: -150, rotate: rotate - 15 }}
-      animate={{ opacity: 1, y: 0, rotate: rotate }}
-      transition={{
-        duration: 2.4,
-        delay,
-        ease: "easeOut",
-        opacity: { duration: 1.2 },
-      }}
-      className={cn("absolute", className)}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.2, delay, ease: "easeOut" }}
+      className={cn("absolute pointer-events-none select-none z-0", className)}
     >
       <motion.div
-        animate={{ y: [0, 15, 0] }}
+        animate={
+          shouldReduceMotion
+            ? {}
+            : {
+                y: [0, -floatY, 0],
+                rotate: [-rotateDeg, rotateDeg, -rotateDeg],
+              }
+        }
         transition={{
-          duration: 12,
+          duration,
           repeat: Infinity,
           ease: "easeInOut",
+          delay,
         }}
-        style={{ width, height }}
-        className="relative"
+        className={cn("filter drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)] transition-all", sizeClassName, opacityClassName)}
       >
-        <div
-          className={cn(
-            "absolute inset-0 rounded-full",
-            "bg-gradient-to-r to-transparent",
-            gradient,
-            "backdrop-blur-[2px] border-2 border-white/[0.15]",
-            "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
-            "after:absolute after:inset-0 after:rounded-full",
-            "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]"
-          )}
-        />
+        {emoji}
       </motion.div>
     </motion.div>
   );
@@ -66,7 +66,6 @@ function HeroGeometric({
   title1?: string;
   title2?: string;
 }) {
-  
   const fadeUpVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 },
@@ -74,16 +73,109 @@ function HeroGeometric({
 
   return (
     <div className="relative h-[60vh] w-full flex items-center justify-center overflow-hidden bg-background">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+      {/* Background Glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl pointer-events-none" />
 
-      <div className="absolute inset-0 overflow-hidden">
-        <ElegantShape delay={0.3} width={600} height={140} rotate={12} gradient="from-indigo-500/[0.15]" className="left-[-10%] md:left-[-5%] top-[15%]" />
-        <ElegantShape delay={0.5} width={500} height={120} rotate={-15} gradient="from-rose-500/[0.15]" className="right-[-5%] top-[70%]" />
-        <ElegantShape delay={0.4} width={300} height={80} rotate={-8} gradient="from-violet-500/[0.15]" className="left-[5%] bottom-[5%]" />
-        <ElegantShape delay={0.6} width={200} height={60} rotate={20} gradient="from-amber-500/[0.15]" className="right-[15%] top-[10%]" />
-        <ElegantShape delay={0.7} width={150} height={40} rotate={-25} gradient="from-cyan-500/[0.15]" className="left-[20%] top-[5%]" />
+      {/* Floating Food Emojis Background Decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+        {/* Top Left - Burger */}
+        <FloatingEmoji
+          emoji="🍔"
+          className="left-[3%] sm:left-[6%] top-[10%]"
+          sizeClassName="text-6xl sm:text-7xl md:text-8xl"
+          opacityClassName="opacity-25"
+          delay={0.2}
+          duration={8}
+          floatY={14}
+          rotateDeg={6}
+        />
+
+        {/* Top Right - Pizza */}
+        <FloatingEmoji
+          emoji="🍕"
+          className="right-[3%] sm:right-[6%] top-[12%]"
+          sizeClassName="text-6xl sm:text-7xl md:text-8xl"
+          opacityClassName="opacity-25"
+          delay={0.4}
+          duration={9}
+          floatY={12}
+          rotateDeg={-8}
+        />
+
+        {/* Top Center-Left (Desktop only) - Dumpling */}
+        <FloatingEmoji
+          emoji="🥟"
+          className="left-[22%] top-[6%] hidden md:block"
+          sizeClassName="text-5xl md:text-6xl"
+          opacityClassName="opacity-20"
+          delay={0.6}
+          duration={7.5}
+          floatY={10}
+          rotateDeg={5}
+        />
+
+        {/* Top Center-Right (Desktop only) - Wrap */}
+        <FloatingEmoji
+          emoji="🌯"
+          className="right-[22%] top-[8%] hidden md:block"
+          sizeClassName="text-5xl md:text-6xl"
+          opacityClassName="opacity-20"
+          delay={0.7}
+          duration={10}
+          floatY={12}
+          rotateDeg={-6}
+        />
+
+        {/* Mid Left (Tablet & Desktop) - Noodles */}
+        <FloatingEmoji
+          emoji="🍜"
+          className="left-[2%] sm:left-[5%] top-[50%] hidden sm:block"
+          sizeClassName="text-5xl sm:text-6xl md:text-7xl"
+          opacityClassName="opacity-20"
+          delay={0.5}
+          duration={8.5}
+          floatY={16}
+          rotateDeg={-5}
+        />
+
+        {/* Mid Right (Tablet & Desktop) - Chicken */}
+        <FloatingEmoji
+          emoji="🍗"
+          className="right-[2%] sm:right-[5%] top-[52%] hidden sm:block"
+          sizeClassName="text-5xl sm:text-6xl md:text-7xl"
+          opacityClassName="opacity-20"
+          delay={0.3}
+          duration={9.5}
+          floatY={14}
+          rotateDeg={7}
+        />
+
+        {/* Bottom Left - Fries */}
+        <FloatingEmoji
+          emoji="🍟"
+          className="left-[6%] sm:left-[10%] bottom-[8%]"
+          sizeClassName="text-5xl sm:text-6xl md:text-7xl"
+          opacityClassName="opacity-25"
+          delay={0.8}
+          duration={9}
+          floatY={12}
+          rotateDeg={-7}
+        />
+
+        {/* Bottom Right - Drink */}
+        <FloatingEmoji
+          emoji="🥤"
+          className="right-[6%] sm:right-[10%] bottom-[10%]"
+          sizeClassName="text-5xl sm:text-6xl md:text-7xl"
+          opacityClassName="opacity-25"
+          delay={0.9}
+          duration={8}
+          floatY={15}
+          rotateDeg={8}
+        />
       </div>
 
+      {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center">
 
