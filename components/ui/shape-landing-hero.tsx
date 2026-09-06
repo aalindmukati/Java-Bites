@@ -59,12 +59,16 @@ function FloatingEmoji({
 
 function HeroGeometric({
   badge = "Java Bites",
-  title1 = "SRMs's Food Court",
-  title2 = "Every stall Every menu No Hassle.",
+  title1 = "SRM's Food Court",
+  title2 = "Every stall. Every menu.",
+  title3 = "No Hassle.",
+  subtitle = "The SRM food court — finally in one place.",
 }: {
   badge?: string;
   title1?: string;
   title2?: string;
+  title3?: string;
+  subtitle?: string;
 }) {
   const fadeUpVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -72,7 +76,7 @@ function HeroGeometric({
   };
 
   return (
-    <div className="relative h-[60vh] w-full flex items-center justify-center overflow-hidden bg-background">
+    <div className="relative h-[65vh] min-h-[480px] w-full flex items-center justify-center overflow-hidden bg-background">
       {/* Background Glow */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl pointer-events-none" />
 
@@ -81,7 +85,7 @@ function HeroGeometric({
         {/* Top Left - Burger */}
         <FloatingEmoji
           emoji="🍔"
-          className="left-[3%] sm:left-[6%] top-[10%]"
+          className="left-[3%] sm:left-[6%] top-[8%]"
           sizeClassName="text-6xl sm:text-7xl md:text-8xl"
           opacityClassName="opacity-25"
           delay={0.2}
@@ -93,7 +97,7 @@ function HeroGeometric({
         {/* Top Right - Pizza */}
         <FloatingEmoji
           emoji="🍕"
-          className="right-[3%] sm:right-[6%] top-[12%]"
+          className="right-[3%] sm:right-[6%] top-[10%]"
           sizeClassName="text-6xl sm:text-7xl md:text-8xl"
           opacityClassName="opacity-25"
           delay={0.4}
@@ -104,8 +108,8 @@ function HeroGeometric({
 
         {/* Top Center-Left (Desktop only) - Dumpling */}
         <FloatingEmoji
-          emoji="❤️"
-          className="left-[22%] top-[6%] hidden md:block"
+          emoji="🥟"
+          className="left-[20%] top-[6%] hidden md:block"
           sizeClassName="text-5xl md:text-6xl"
           opacityClassName="opacity-20"
           delay={0.6}
@@ -117,7 +121,7 @@ function HeroGeometric({
         {/* Top Center-Right (Desktop only) - Wrap */}
         <FloatingEmoji
           emoji="🌯"
-          className="right-[22%] top-[8%] hidden md:block"
+          className="right-[20%] top-[8%] hidden md:block"
           sizeClassName="text-5xl md:text-6xl"
           opacityClassName="opacity-20"
           delay={0.7}
@@ -129,7 +133,7 @@ function HeroGeometric({
         {/* Mid Left (Tablet & Desktop) - Noodles */}
         <FloatingEmoji
           emoji="🍜"
-          className="left-[2%] sm:left-[5%] top-[50%] hidden sm:block"
+          className="left-[2%] sm:left-[4%] top-[48%] hidden sm:block"
           sizeClassName="text-5xl sm:text-6xl md:text-7xl"
           opacityClassName="opacity-20"
           delay={0.5}
@@ -138,10 +142,10 @@ function HeroGeometric({
           rotateDeg={-5}
         />
 
-        {/* Mid Right (Tablet & Desktop) - Chicken */}
+        {/* Mid Right (Tablet & Desktop) - Curry */}
         <FloatingEmoji
-          emoji="🍗"
-          className="right-[2%] sm:right-[5%] top-[52%] hidden sm:block"
+          emoji="🍛"
+          className="right-[2%] sm:right-[4%] top-[50%] hidden sm:block"
           sizeClassName="text-5xl sm:text-6xl md:text-7xl"
           opacityClassName="opacity-20"
           delay={0.3}
@@ -153,7 +157,7 @@ function HeroGeometric({
         {/* Bottom Left - Fries */}
         <FloatingEmoji
           emoji="🍟"
-          className="left-[6%] sm:left-[10%] bottom-[8%]"
+          className="left-[5%] sm:left-[8%] bottom-[8%]"
           sizeClassName="text-6xl sm:text-7xl md:text-8xl"
           opacityClassName="opacity-25"
           delay={0.8}
@@ -165,7 +169,7 @@ function HeroGeometric({
         {/* Bottom Right - Drink */}
         <FloatingEmoji
           emoji="🥤"
-          className="right-[6%] sm:right-[10%] bottom-[10%]"
+          className="right-[5%] sm:right-[8%] bottom-[10%]"
           sizeClassName="text-5xl sm:text-6xl md:text-7xl"
           opacityClassName="opacity-25"
           delay={0.9}
@@ -185,10 +189,10 @@ function HeroGeometric({
             initial="hidden"
             animate="visible"
             transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8"
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-6"
           >
             <Circle className="h-2 w-2 fill-rose-500/80" />
-            <span className="text-sm text-foreground/60">{badge}</span>
+            <span className="text-sm font-medium text-foreground/70">{badge}</span>
           </motion.div>
 
           {/* Title */}
@@ -198,13 +202,15 @@ function HeroGeometric({
             animate="visible"
             transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
           >
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/80">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight leading-tight">
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/80 block">
                 {title1}
               </span>
-              <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-foreground/90 to-accent">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-foreground/90 to-accent block">
                 {title2}
+              </span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent via-primary to-foreground block">
+                {title3}
               </span>
             </h1>
           </motion.div>
@@ -216,8 +222,8 @@ function HeroGeometric({
             animate="visible"
             transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
           >
-            <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
-              The SRM food court — finally in one place.
+            <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto font-normal">
+              {subtitle}
             </p>
           </motion.div>
 

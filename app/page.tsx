@@ -45,7 +45,9 @@ export default async function Home() {
       <HeroGeometric
         badge="Java Bites"
         title1="SRM's Food Court"
-        title2="Every stall Every menu No Hassle."
+        title2="Every stall. Every menu."
+        title3="No Hassle."
+        subtitle="The SRM food court — finally in one place."
       />
 
       {/* Global Search & Primary CTA */}
