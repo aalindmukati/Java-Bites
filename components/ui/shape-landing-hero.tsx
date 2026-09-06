@@ -108,7 +108,7 @@ function HeroGeometric({
 
         {/* Top Center-Left (Desktop only) - Dumpling */}
         <FloatingEmoji
-          emoji="🥟"
+          emoji="❤️"
           className="left-[20%] top-[6%] hidden md:block"
           sizeClassName="text-5xl md:text-6xl"
           opacityClassName="opacity-20"
