@@ -39,26 +39,23 @@ export default async function Home() {
     .slice(0, 3);
 
   return (
-    <main className="min-h-screen pb-24 bg-background transition-colors duration-300">
+    <main className="min-h-screen bg-background pb-20">
       
-      {/* Animated Hero */}
       <HeroGeometric
         badge="Java Bites"
         title1="SRM's Food Court"
         title2="Every stall. Every menu."
-        title3="No Hassle."
+        title3="No guesswork"
         subtitle="The SRM food court — finally in one place."
       />
 
-      {/* Global Search & Primary CTA */}
-      <div className="max-w-4xl mx-auto px-6 -mt-8 relative z-30 space-y-6">
+      <div className="mx-auto max-w-6xl px-5 pt-8 sm:px-6 sm:pt-10">
         <GlobalSearch vendors={vendors} />
-
-        <div className="flex justify-center">
+        <div className="mt-5 flex justify-center sm:justify-start">
           <Link href="/vendors">
             <Button 
               size="lg" 
-              className="rounded-full px-8 py-6 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 transition-all flex items-center gap-2"
+              className="h-12 rounded-lg bg-primary px-5 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90 active:scale-[0.98]"
             >
               Browse All Vendors <ArrowRight className="w-5 h-5" />
             </Button>
@@ -66,14 +63,14 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="mt-12">
+      <div className="mt-10">
         <AnnouncementBanner />
       </div>
 
       {/* Featured Vendors */}
-      <section className="max-w-5xl mx-auto px-6 mt-12 mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-foreground">Featured Vendors</h2>
+      <section className="mx-auto mb-8 mt-14 max-w-6xl px-5 sm:px-6">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-2xl font-medium tracking-tight text-foreground">Featured vendors</h2>
           <Link 
             href="/vendors" 
             className="text-sm font-medium text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
@@ -82,26 +79,26 @@ export default async function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {featuredVendors.map(vendor => (
             <SpotlightCard key={vendor.id} className="h-full">
-              <Link href={`/vendors/${vendor.slug || vendor.id}`} className="block h-full p-5 cursor-pointer">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-4 relative">
+              <Link href={`/vendors/${vendor.slug || vendor.id}`} className="block h-full p-3 sm:p-4">
+                <div className="relative mb-3 aspect-[4/3] overflow-hidden rounded-xl">
                   <Image 
                     src={vendor.image_url || 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2947&auto=format&fit=crop'} 
                     alt={vendor.name} 
                     fill
                     priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    className="object-cover transition-transform duration-300 hover:scale-[1.02]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-3 text-white">
-                    <h3 className="font-semibold text-lg">{vendor.name}</h3>
-                    <p className="text-sm text-white/80">{vendor.cuisine_type}</p>
+                    <h3 className="text-lg font-medium">{vendor.name}</h3>
+                    <p className="text-sm text-white/75">{vendor.cuisine_type}</p>
                   </div>
                 </div>
-                <div className="flex justify-between items-center text-sm text-muted-foreground mt-4">
+                <div className="mt-3 flex items-center justify-between text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-4 h-4" /> {vendor.location_in_court}
                   </span>

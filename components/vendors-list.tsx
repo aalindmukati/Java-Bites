@@ -5,9 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { VendorCard } from './vendor-card';
 import { Input } from './ui/input';
-import { Search, ChevronDown } from 'lucide-react';
+import { Search, ChevronDown, UtensilsCrossed } from 'lucide-react';
 import { Badge } from './ui/badge';
-import { BackgroundPaths } from './ui/background-paths';
 import { Button } from './ui/button';
 import { isVeg } from '@/lib/utils';
 
@@ -46,19 +45,6 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
   const [budgetFilter, setBudgetFilter] = useState<string>("all");
   const [vegFilter, setVegFilter] = useState<string>("all");
   const [visibleCount, setVisibleCount] = useState(10);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setDebouncedQuery(searchQuery);
@@ -115,26 +101,20 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
   }, [filteredVendors, visibleCount]);
 
   return (
-    <div className="relative overflow-hidden bg-background text-foreground transition-colors duration-300">
-      {!isMobile && <BackgroundPaths />}
-
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-neutral-900 to-black opacity-70 pointer-events-none" />
-
-      {/* Foreground content */}
-      <div className="relative z-10">
+    <div className="bg-background text-foreground">
+      <div>
         
         {/* Search + Filter */}
-        <section className="px-6 pt-12 pb-6 border-b border-border">
-          <div className="max-w-6xl mx-auto space-y-6">
+        <section className="border-b border-border px-5 pb-6 pt-8 sm:px-6">
+          <div className="mx-auto max-w-6xl space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="relative max-w-2xl flex-1 flex items-center">
-                <Search className="absolute left-4 w-5 h-5 text-white/40" />
+                <Search className="absolute left-4 h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
                 <Input
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
-                  placeholder="Search vendors, menu items, or categories..."
-                  className="pl-12 h-14 text-lg bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/30 focus-visible:ring-white/20 rounded-full shadow-sm"
+                  placeholder="Search vendors, menu items, or categories"
+                  className="h-12 rounded-xl border-border bg-card pl-12 text-base placeholder:text-muted-foreground focus-visible:ring-primary/30"
                 />
               </div>
             </div>
@@ -144,10 +124,10 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                 <Badge
                   variant={!cuisineFilter ? 'default' : 'outline'}
                   onClick={() => setCuisineFilter("")}
-                  className={`cursor-pointer text-sm py-1.5 px-4 rounded-full transition-colors ${
-                    !cuisineFilter
-                      ? 'bg-white text-black'
-                      : 'bg-transparent text-white/60 border-white/[0.15] hover:border-white/30'
+                    className={`cursor-pointer rounded-lg px-3 py-2 text-sm transition-colors ${
+                      !cuisineFilter
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground'
                   }`}
                 >
                   All Cuisines
@@ -157,10 +137,10 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                     key={c}
                     variant={cuisineFilter === c ? 'default' : 'outline'}
                     onClick={() => setCuisineFilter(c)}
-                    className={`cursor-pointer text-sm py-1.5 px-4 rounded-full transition-colors ${
+                    className={`cursor-pointer rounded-lg px-3 py-2 text-sm transition-colors ${
                       cuisineFilter === c
-                        ? 'bg-white text-black'
-                        : 'bg-transparent text-white/60 border-white/[0.15] hover:border-white/30'
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground'
                     }`}
                   >
                     {c}
@@ -168,12 +148,12 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                 ))}
               </div>
 
-              <div className="h-6 w-px bg-white/10 hidden md:block" />
+              <div className="hidden h-8 w-px bg-border md:block" />
 
               <div className="flex flex-wrap items-center gap-6">
                 {/* Budget Filter */}
                 <div className="flex flex-col gap-2">
-                  <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Budget</span>
+                  <span className="text-xs text-muted-foreground">Budget</span>
                   <div className="flex flex-wrap gap-2">
                     {[
                       { label: "All", value: "all" },
@@ -187,10 +167,10 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                         <button
                           key={item.value}
                           onClick={() => setBudgetFilter(item.value)}
-                          className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all ${
+                          className={`rounded-md border px-3 py-1.5 text-xs transition-colors ${
                             isActive
-                              ? 'bg-green-500/20 border-green-500/50 text-green-400'
-                              : 'bg-white/[0.03] border-white/[0.08] text-white/60 hover:bg-white/[0.08]'
+                              ? 'border-primary bg-primary/15 text-primary'
+                              : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground'
                           }`}
                         >
                           {item.label}
@@ -202,7 +182,7 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
 
                 {/* Diet Filter */}
                 <div className="flex flex-col gap-2">
-                  <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Diet</span>
+                  <span className="text-xs text-muted-foreground">Diet</span>
                   <div className="flex flex-wrap gap-2">
                     {[
                       { label: "All", value: "all" },
@@ -214,10 +194,10 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                         <button
                           key={item.value}
                           onClick={() => setVegFilter(item.value)}
-                          className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all ${
+                          className={`rounded-md border px-3 py-1.5 text-xs transition-colors ${
                             isActive
-                              ? 'bg-amber-500/20 border-amber-500/50 text-amber-400'
-                              : 'bg-white/[0.03] border-white/[0.08] text-white/60 hover:bg-white/[0.08]'
+                              ? 'border-primary bg-primary/15 text-primary'
+                              : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground'
                           }`}
                         >
                           {item.label}
@@ -229,13 +209,13 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
 
                 {/* Today's Mess Action */}
                 <div className="flex flex-col gap-2">
-                  <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Dining</span>
+                  <span className="text-xs text-muted-foreground">Dining</span>
                   <div>
                     <Link
                       href="/mess"
-                      className="px-4 py-1.5 rounded-full border text-xs font-medium transition-all flex items-center gap-1.5 bg-amber-500/20 border-amber-500/50 text-amber-500 hover:bg-amber-500/30 dark:bg-amber-500/25 dark:border-amber-500/40 dark:text-amber-400 cursor-pointer"
+                      className="flex items-center gap-2 rounded-md border border-primary/50 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
                     >
-                      🍽 Today's Mess
+                      <UtensilsCrossed className="h-4 w-4" strokeWidth={1.5} /> Today&apos;s Mess
                     </Link>
                   </div>
                 </div>
@@ -245,11 +225,11 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
         </section>
 
         {/* Vendor Grid */}
-        <section className="px-6 py-12">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex justify-between items-end mb-8">
+        <section className="px-5 py-10 sm:px-6 sm:py-12">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-6 flex items-end justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-foreground mb-2">
+                <h2 className="mb-2 text-2xl font-medium tracking-tight text-foreground">
                   {searchQuery || cuisineFilter || budgetFilter !== "all" || vegFilter !== "all" ? 'Search Results' : 'All Vendors'}
                 </h2>
                 {budgetFilter !== "all" && (
@@ -265,12 +245,13 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
               </div>
             </div>
             {visibleVendors.length === 0 ? (
-              <div className="text-center py-20 rounded-2xl border border-border bg-card">
-                <p className="text-xl text-muted-foreground">No vendors found matching your criteria.</p>
+              <div className="rounded-xl border border-border bg-card px-6 py-16 text-center">
+                <p className="text-lg text-foreground">No vendors match those filters</p>
+                <p className="mt-2 text-sm text-muted-foreground">Try clearing a filter or searching for a different dish</p>
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {visibleVendors.map(vendor => (
                     <VendorCard key={vendor.id} vendor={vendor} avgRating={vendor.avgRating || 0} />
                   ))}
@@ -282,7 +263,7 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
                     <Button 
                       onClick={() => setVisibleCount(prev => prev + 10)}
                       variant="outline" 
-                      className="bg-white/[0.03] border-white/[0.08] text-white hover:bg-white/[0.08] rounded-full px-8 py-6 h-auto"
+                      className="h-11 rounded-lg border-border bg-card px-5 text-foreground hover:bg-secondary"
                     >
                       Load More Vendors <ChevronDown className="ml-2 w-4 h-4" />
                     </Button>
@@ -297,5 +278,3 @@ export function VendorsList({ vendors, uniqueCuisines }: VendorsListProps) {
     </div>
   );
 }
-
-

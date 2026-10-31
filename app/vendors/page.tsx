@@ -31,10 +31,10 @@ export default async function VendorsPage() {
   const uniqueCuisines = Array.from(new Set(vendors.map(v => v.cuisine_type))) as string[];
 
   return (
-    <main className="min-h-screen pb-20 bg-black relative">
-      <div className="max-w-6xl mx-auto px-6 pt-12">
-        <h1 className="text-4xl font-bold text-white mb-2">Our Vendors</h1>
-        <p className="text-white/40 mb-12">The SRM food court — finally in one place.</p>
+    <main className="min-h-screen bg-background pb-20">
+      <div className="mx-auto max-w-6xl px-5 pb-4 pt-10 sm:px-6 sm:pt-14">
+        <h1 className="mb-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">Food court vendors</h1>
+        <p className="text-muted-foreground">Browse the stalls, menus, and dishes at SRM</p>
       </div>
 
       <Suspense fallback={null}>

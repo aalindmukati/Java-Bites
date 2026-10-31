@@ -2,14 +2,14 @@ export default function VendorsLoading() {
   return (
     <main className="min-h-screen pb-20 bg-background text-foreground relative overflow-hidden">
       {/* Header Skeleton */}
-      <div className="max-w-6xl mx-auto px-6 pt-12">
-        <div className="h-10 w-48 bg-muted/60 rounded-xl animate-pulse mb-3" />
-        <div className="h-5 w-72 bg-muted/40 rounded-lg animate-pulse mb-12" />
+      <div className="mx-auto max-w-6xl px-5 pt-10 sm:px-6 sm:pt-14">
+        <div className="mb-3 h-9 w-48 animate-pulse rounded-lg bg-muted/60" />
+        <div className="mb-8 h-5 w-72 animate-pulse rounded-lg bg-muted/40" />
       </div>
 
       {/* Search & Filter Section Skeleton */}
       <section className="px-6 pt-4 pb-6 border-b border-border/40">
-        <div className="max-w-6xl mx-auto space-y-6">
+        <div className="mx-auto max-w-6xl space-y-6">
           {/* Search bar */}
           <div className="h-14 max-w-2xl bg-secondary/50 border border-border/40 rounded-full animate-pulse" />
 
@@ -61,11 +61,11 @@ export default function VendorsLoading() {
       <section className="px-6 py-12">
         <div className="max-w-6xl mx-auto">
           <div className="h-7 w-32 bg-muted/60 rounded-lg animate-pulse mb-8" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, i) => (
               <div 
                 key={`grid-${i}`} 
-                className="h-[320px] rounded-2xl bg-card/60 border border-border/50 animate-pulse flex flex-col overflow-hidden"
+                className="flex h-[288px] flex-col overflow-hidden rounded-2xl border border-border/50 bg-card/60 animate-pulse"
               >
                 <div className="h-48 bg-muted/50 w-full" />
                 <div className="p-5 space-y-3 flex-1">

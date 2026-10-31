@@ -9,12 +9,12 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md transition-colors duration-300">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
         {/* Left: Logo / Wordmark */}
         <Link 
           href="/" 
-          className="flex items-center gap-2.5 font-bold text-lg tracking-tight text-foreground hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2.5 text-lg font-semibold tracking-tight text-foreground transition-opacity hover:opacity-80"
         >
           <Image
             src="/logo.png"
@@ -24,17 +24,15 @@ export function Navbar() {
             className="rounded-lg object-contain shrink-0"
             priority
           />
-          <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-            Java Bites
-          </span>
+          <span>Java Bites</span>
         </Link>
 
         {/* Right: Vendors Link */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-5">
           <Link
             href="/vendors"
             className={`text-sm font-medium transition-colors hover:text-foreground ${
-              pathname.startsWith('/vendors') ? 'text-foreground font-semibold' : 'text-muted-foreground'
+              pathname.startsWith('/vendors') ? 'text-foreground' : 'text-muted-foreground'
             }`}
           >
             Vendors

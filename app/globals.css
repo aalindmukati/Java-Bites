@@ -50,50 +50,48 @@
 
 @layer base {
   :root {
-    /* Warm light mode food colors */
-    --background: #fff8f0;
-    --foreground: #2a1700;
-    --card: #ffffff;
-    --card-foreground: #2a1700;
-    --popover: #ffffff;
-    --popover-foreground: #2a1700;
-    --primary: #f59e0b;
-    --primary-foreground: #2a1700;
-    --secondary: #ffecd6;
-    --secondary-foreground: #2a1700;
-    --muted: #ffecd6;
-    --muted-foreground: #7d6b59;
-    --accent: #ffb95f;
-    --accent-foreground: #2a1700;
+    --background: #f7f4ee;
+    --foreground: #1f1b16;
+    --card: #fdfbf7;
+    --card-foreground: #1f1b16;
+    --popover: #fdfbf7;
+    --popover-foreground: #1f1b16;
+    --primary: #c97808;
+    --primary-foreground: #1f1b16;
+    --secondary: #efe9df;
+    --secondary-foreground: #1f1b16;
+    --muted: #efe9df;
+    --muted-foreground: #6f675d;
+    --accent: #efe9df;
+    --accent-foreground: #1f1b16;
     --destructive: #dc2626;
     --destructive-foreground: #ffffff;
-    --border: #e6d5c3;
-    --input: #e6d5c3;
-    --ring: #f59e0b;
-    --radius: 0.75rem;
+    --border: #ded7cc;
+    --input: #ded7cc;
+    --ring: #c97808;
+    --radius: 0.625rem;
   }
   
   .dark {
-    /* Base Colors from Stitch Inspiration */
-    --background: #19120a;
-    --foreground: #f0e0d1;
-    --card: #261e15;
-    --card-foreground: #f0e0d1;
-    --popover: #261e15;
-    --popover-foreground: #f0e0d1;
-    --primary: #f59e0b;
-    --primary-foreground: #2a1700;
-    --secondary: #3c3329;
-    --secondary-foreground: #f0e0d1;
-    --muted: #3c3329;
-    --muted-foreground: #a08e7a;
-    --accent: #ffb95f;
-    --accent-foreground: #2a1700;
+    --background: #161513;
+    --foreground: #efe9de;
+    --card: #1c1a18;
+    --card-foreground: #efe9de;
+    --popover: #1c1a18;
+    --popover-foreground: #efe9de;
+    --primary: #e9a23b;
+    --primary-foreground: #20180d;
+    --secondary: #262421;
+    --secondary-foreground: #efe9de;
+    --muted: #262421;
+    --muted-foreground: #aaa398;
+    --accent: #262421;
+    --accent-foreground: #efe9de;
     --destructive: #ffb4ab;
     --destructive-foreground: #690005;
-    --border: #534434;
-    --input: #3c3329;
-    --ring: #f59e0b;
+    --border: #3b3731;
+    --input: #3b3731;
+    --ring: #e9a23b;
   }
 }
 
@@ -104,4 +102,6 @@
   body {
     @apply bg-background text-foreground antialiased;
   }
+  ::selection { background: color-mix(in srgb, var(--primary) 35%, transparent); }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 }

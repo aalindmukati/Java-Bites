@@ -5,9 +5,7 @@ import Link from 'next/link';
 import { Star, MapPin, Phone, Clock, Search, ArrowLeft } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ReviewForm } from './review-form';
-import { BackgroundPaths } from '@/components/ui/background-paths';
 import { VegIndicator } from '@/components/ui/veg-indicator';
-import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { isVeg } from '@/lib/utils';
 
@@ -24,15 +22,6 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   useEffect(() => {
     setImgSrc(vendor.image_url || fallbackImage);
   }, [vendor.image_url]);
-
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const avgRating = reviews.length > 0 
     ? reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length
@@ -133,13 +122,10 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
   };
 
   return (
-    <main className="min-h-screen pb-20 bg-background text-foreground relative overflow-hidden transition-colors duration-300">
-      {!isMobile && <BackgroundPaths />}
-
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background opacity-80 pointer-events-none" />
+    <main className="relative min-h-screen overflow-hidden bg-background pb-20 text-foreground">
 
       {/* Header Image */}
-      <div className="relative h-64 md:h-80 w-full z-0">
+      <div className="relative z-0 h-56 w-full sm:h-64 md:h-80">
         <Image 
           src={imgSrc} 
           alt={vendor.name} 
@@ -154,35 +140,35 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 -mt-20 relative z-10">
+      <div className="relative z-10 mx-auto -mt-16 max-w-5xl px-5 sm:px-6">
         {/* Minimal Back Arrow */}
         <Link 
           href="/vendors"
           aria-label="Go back to vendors"
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-background/80 hover:bg-background border border-border/80 text-foreground/80 hover:text-foreground backdrop-blur-md shadow-md transition-all duration-200 mb-4 hover:scale-105"
+          className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
 
         {/* Vendor Info */}
         <div className="mb-10">
-          <h1 className="text-4xl font-bold text-foreground">{vendor.name}</h1>
-          <div className="flex flex-wrap gap-4 text-muted-foreground mt-2 items-center text-sm">
-            <span className="flex items-center"><MapPin className="w-4 h-4 mr-1" />{vendor.location_in_court}</span>
-            <span className="flex items-center text-yellow-400">
-              <Star className="w-4 h-4 mr-1 fill-current" />
+          <h1 className="text-3xl font-medium tracking-tight text-foreground sm:text-4xl">{vendor.name}</h1>
+          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+            <span className="flex items-center gap-2"><MapPin className="h-4 w-4" strokeWidth={1.5} />{vendor.location_in_court}</span>
+            <span className="flex items-center gap-2 text-primary">
+              <Star className="h-4 w-4 fill-current" strokeWidth={1.5} />
               {avgRating > 0 ? avgRating.toFixed(1) : "No reviews"}
             </span>
-            <span className="flex items-center text-foreground">
-              <Clock className="w-4 h-4 mr-1" />
+            <span className="flex items-center gap-2 text-secondary-foreground">
+              <Clock className="h-4 w-4" strokeWidth={1.5} />
               9:00 AM – 11:00 PM
             </span>
             {vendor.phone_number && (
               <a 
                 href={`tel:${vendor.phone_number}`}
-                className="flex items-center hover:text-foreground transition-colors"
+                className="flex items-center gap-2 transition-colors hover:text-foreground"
               >
-                <Phone className="w-4 h-4 mr-1" />
+                <Phone className="h-4 w-4" strokeWidth={1.5} />
                 {vendor.phone_number}
               </a>
             )}
@@ -195,8 +181,8 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
           <Input
             value={menuSearchQuery}
             onChange={(e) => setMenuSearchQuery(e.target.value)}
-            placeholder="Search menu..."
-            className="pl-11 pr-12 h-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground rounded-xl"
+            placeholder="Search menu"
+            className="h-12 rounded-xl border-border bg-card pl-11 pr-12 text-foreground placeholder:text-muted-foreground"
           />
           {menuSearchQuery && (
             <button
@@ -209,10 +195,10 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-6 mb-6 items-center border-t border-b border-border py-4">
+        <div className="mb-6 flex flex-wrap items-center gap-6 border-y border-border py-5">
           {/* Budget Filter */}
           <div className="flex flex-col gap-2">
-            <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Budget</span>
+            <span className="text-xs text-muted-foreground">Budget</span>
             <div className="flex flex-wrap gap-2">
               {[
                 { label: "All", value: "all" },
@@ -226,10 +212,10 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
                   <button
                     key={item.value}
                     onClick={() => setBudgetFilter(item.value)}
-                    className={`px-3 py-1.5 rounded-full border text-xs transition-all shrink-0 ${
+                    className={`shrink-0 rounded-md border px-3 py-1.5 text-xs transition-colors ${
                       isActive
-                        ? 'bg-green-500/20 border-green-500/50 text-green-500 dark:text-green-400 font-medium'
-                        : 'bg-secondary text-secondary-foreground border-border hover:border-primary/50'
+                        ? 'border-primary bg-primary/15 text-primary font-medium'
+                        : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground'
                     }`}
                   >
                     {item.label}
@@ -241,7 +227,7 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
           {/* Diet Filter */}
           <div className="flex flex-col gap-2">
-            <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Diet</span>
+            <span className="text-xs text-muted-foreground">Diet</span>
             <div className="flex flex-wrap gap-2">
               {[
                 { label: "All", value: "all" },
@@ -253,10 +239,10 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
                   <button
                     key={item.value}
                     onClick={() => setDietFilter(item.value)}
-                    className={`px-3 py-1.5 rounded-full border text-xs transition-all shrink-0 ${
+                    className={`shrink-0 rounded-md border px-3 py-1.5 text-xs transition-colors ${
                       isActive
-                        ? 'bg-amber-500/20 border-amber-500/50 text-amber-500 dark:text-amber-400 font-medium'
-                        : 'bg-secondary text-secondary-foreground border-border hover:border-primary/50'
+                        ? 'border-primary bg-primary/15 text-primary font-medium'
+                        : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground'
                     }`}
                   >
                     {item.label}
@@ -269,16 +255,16 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
 
         {/* Category Tabs */}
         {categories.length > 0 && (
-          <div className="sticky top-16 bg-background/80 backdrop-blur px-4 py-3 flex gap-2 overflow-x-auto z-20 border-b border-border scrollbar-none">
+          <div className="sticky top-16 z-20 -mx-5 flex gap-2 overflow-x-auto border-b border-border bg-background/95 px-5 py-3 backdrop-blur-sm sm:-mx-6 sm:px-6 scrollbar-none">
             {categories.map(category => (
               <button
                 key={category}
                 ref={el => { tabRefs.current[category] = el; }}
                 onClick={() => scrollToCategory(category)}
-                className={`px-4 py-2 rounded-full border text-sm transition-all shrink-0 ${
+                className={`shrink-0 rounded-lg border px-4 py-2 text-sm transition-colors ${
                   activeCategory === category 
-                    ? 'bg-foreground text-background border-foreground font-medium' 
-                    : 'bg-secondary/50 text-muted-foreground border-border hover:text-foreground'
+                    ? 'border-primary bg-primary text-primary-foreground font-medium'
+                    : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground'
                 }`}
               >
                 {category}
@@ -298,51 +284,32 @@ export function VendorDetailClient({ vendor, menuItems, reviews }: any) {
               </p>
             </div>
           ) : (
-            <AnimatePresence mode="popLayout">
-              {(Object.entries(groupedMenu) as [string, any[]][]).map(([category, items]) => (
-                <motion.div 
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  key={category} 
-                  ref={(el) => { categoryRefs.current[category] = el; }}
-                >
-                  <h3 className="text-xl text-foreground mb-4">{category}</h3>
-
-                  <AnimatePresence mode="popLayout">
-                    {items.map(item => (
-                      <motion.div 
-                        layout
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        key={item.id} 
-                        className="flex justify-between items-center p-3 border-b border-border overflow-hidden"
-                      >
-                        <div className="flex items-center gap-3">
-                          <VegIndicator value={item.is_veg} />
-                          <span className="text-foreground">{item.name}</span>
-                        </div>
-                        <span className="text-foreground font-medium">₹{item.price}</span>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            (Object.entries(groupedMenu) as [string, any[]][]).map(([category, items]) => (
+              <div key={category} ref={(el) => { categoryRefs.current[category] = el; }}>
+                <h3 className="mb-3 text-xl font-medium text-foreground">{category}</h3>
+                <div className="overflow-hidden rounded-xl border border-border bg-card">
+                  {items.map(item => (
+                    <div key={item.id} className="flex min-h-14 items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
+                      <div className="flex min-w-0 items-center gap-3">
+                        <VegIndicator value={item.is_veg} />
+                        <span className="truncate text-foreground">{item.name}</span>
+                      </div>
+                      <span className="shrink-0 font-medium tabular-nums text-foreground">₹{item.price}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
           )}
         </div>
 
         {/* Reviews */}
         <div className="mt-12 relative z-10">
-          <h2 className="text-xl text-foreground mb-4">Reviews</h2>
+          <h2 className="mb-4 text-xl font-medium text-foreground">Reviews</h2>
           <ReviewForm vendorId={vendor.id} vendorSlug={vendor.slug} />
 
           {reviews.map((r: any) => (
-            <div key={r.id} className="mt-4 p-4 bg-secondary border border-border rounded-xl">
+            <div key={r.id} className="mt-4 rounded-xl border border-border bg-card p-4">
               <p className="text-foreground font-medium">{r.reviewer_name}</p>
               <p className="text-muted-foreground text-sm mt-1">{r.review_text}</p>
             </div>

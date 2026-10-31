@@ -144,7 +144,7 @@ export function GlobalSearch({ vendors }: GlobalSearchProps) {
   };
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-xl mx-auto z-30">
+    <div ref={containerRef} className="relative z-30 w-full max-w-xl">
       {/* Search Bar */}
       <div className="relative flex items-center">
         <Search className="absolute left-4 w-5 h-5 text-muted-foreground pointer-events-none" />
@@ -157,14 +157,14 @@ export function GlobalSearch({ vendors }: GlobalSearchProps) {
           }}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          placeholder="Search vendors or dishes..."
-          className="w-full pl-12 pr-4 h-14 bg-secondary/80 hover:bg-secondary focus:bg-secondary border border-border focus:border-primary/50 text-foreground placeholder:text-muted-foreground text-base rounded-2xl shadow-lg shadow-black/20 outline-none transition-all duration-200"
+          placeholder="Search vendors or dishes"
+          className="h-12 w-full rounded-xl border border-border bg-card pl-12 pr-4 text-base text-foreground outline-none transition-[background-color,border-color] duration-150 hover:border-primary/40 focus:border-primary/60"
         />
       </div>
 
       {/* Popover Results */}
       {isOpen && query.trim().length >= 2 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-popover/95 backdrop-blur-xl border border-border rounded-2xl shadow-2xl shadow-black/40 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95 duration-200">
+        <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-border bg-popover shadow-lg shadow-black/15 animate-in fade-in-0 duration-200">
           {results.length > 0 ? (
             <div className="py-2 divide-y divide-border/50">
               <div className="max-h-[360px] overflow-y-auto">

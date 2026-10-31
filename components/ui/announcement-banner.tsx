@@ -24,30 +24,21 @@ export function AnnouncementBanner() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: -20, scale: 0.95 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 0.95, filter: "blur(10px)" }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-4xl mx-auto px-4 mt-8 mb-12 z-40"
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="relative z-40 mx-auto mb-12 mt-8 w-full max-w-6xl px-5 sm:px-6"
         >
-          {/* Gradient Border Wrapper */}
-          <div className="relative group rounded-2xl p-[1px] bg-gradient-to-b from-white/10 to-transparent hover:from-white/20 transition-colors duration-500 overflow-hidden">
-            
-            {/* Glassmorphism Container */}
-            <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-card/80 backdrop-blur-xl border border-border shadow-2xl">
+          <div className="relative overflow-hidden rounded-xl border border-border bg-card">
+            <div className="relative flex flex-col items-start justify-between gap-4 p-5 sm:flex-row sm:items-center sm:p-6">
               
               {/* Content Section */}
               <div className="flex-1 min-w-0 pr-10 sm:pr-12">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <div className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </div>
-                  <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/20">
-                    Beta
-                  </span>
-                  <h3 className="text-sm sm:text-base font-medium text-foreground flex items-center gap-1.5 truncate">
-                    <span>🚧</span> Java Bites is actively evolving
+                <div className="mb-1.5 flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-primary" />
+                  <h3 className="text-sm font-medium text-foreground sm:text-base">
+                    Java Bites is evolving
                   </h3>
                 </div>
                 
@@ -60,15 +51,12 @@ export function AnnouncementBanner() {
               {/* Dismiss Button */}
               <button
                 onClick={handleDismiss}
-                className="absolute top-4 right-4 md:top-1/2 md:-translate-y-1/2 md:right-5 p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors"
+                className="absolute right-4 top-4 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:right-5 sm:top-1/2 sm:-translate-y-1/2"
                 aria-label="Dismiss announcement"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            
-            {/* Decorative background glow inside the border wrapper */}
-            <div className="absolute top-0 left-1/4 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent blur-sm opacity-50" />
           </div>
         </motion.div>
       )}
