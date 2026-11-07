@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
+import { DiwaliCelebration } from "@/components/diwali/diwali-celebration";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({
@@ -92,6 +93,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
+          <DiwaliCelebration />
           <Navbar />
           {children}
         </ThemeProvider>

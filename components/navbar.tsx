@@ -4,9 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ui/theme-toggle';
+import { useDiwali } from './diwali/use-diwali';
+import { DiwaliDiya } from './diwali/diwali-diya';
 
 export function Navbar() {
   const pathname = usePathname();
+  const { isActive, isMounted } = useDiwali();
+  const showDiwali = isMounted && isActive;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm">
@@ -14,17 +18,27 @@ export function Navbar() {
         {/* Left: Logo / Wordmark */}
         <Link 
           href="/" 
-          className="flex items-center gap-2.5 text-lg font-semibold tracking-tight text-foreground transition-opacity hover:opacity-80"
+          data-diwali-logo="true"
+          className="group flex items-center gap-2.5 text-lg font-semibold tracking-tight text-foreground transition-opacity hover:opacity-90"
         >
-          <Image
-            src="/logo.png"
-            alt="Java Bites Logo"
-            width={28}
-            height={28}
-            className="rounded-lg object-contain shrink-0"
-            priority
-          />
-          <span>Java Bites</span>
+          <div className="relative">
+            <Image
+              src="/logo.png"
+              alt="Java Bites Logo"
+              width={28}
+              height={28}
+              className="rounded-lg object-contain shrink-0"
+              priority
+            />
+          </div>
+          <span className="flex items-center gap-2">
+            <span>Java Bites</span>
+            {showDiwali && (
+              <span className="inline-flex items-center transition-transform group-hover:scale-110">
+                <DiwaliDiya size={19} />
+              </span>
+            )}
+          </span>
         </Link>
 
         {/* Right: Vendors Link */}
