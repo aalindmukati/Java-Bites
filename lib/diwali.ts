@@ -32,7 +32,7 @@ export const DIWALI_CONFIG = {
   startAt:
     (typeof process !== 'undefined' &&
       process.env.NEXT_PUBLIC_DIWALI_START_AT) ||
-    '2026-11-07T00:00:00+05:30',
+    '2026-11-08T10:47:26+05:30',
 
   /**
    * Exact duration of the campaign in hours.

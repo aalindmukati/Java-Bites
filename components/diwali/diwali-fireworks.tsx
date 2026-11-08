@@ -17,8 +17,8 @@ interface Particle {
   popRadius?: number;
 }
 
-const GOLDEN_PALETTE = ['#FFD700', '#FBBF24', '#F59E0B', '#FEF08A', '#FDE047'];
-const AMBER_PALETTE = ['#D97706', '#B45309', '#F59E0B', '#FCD34D'];
+const GOLDEN_PALETTE = ['#FFD700', '#2441fbff', '#F59E0B', '#FEF08A', '#FDE047'];
+const AMBER_PALETTE = ['#D97706', '#B45309', '#F59E0B', '#4d7cfcff'];
 const ORANGE_PALETTE = ['#F97316', '#EA580C', '#FB923C', '#FF7849'];
 const RED_PALETTE = ['#EF4444', '#DC2626', '#F87171'];
 
